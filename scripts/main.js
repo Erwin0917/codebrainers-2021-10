@@ -1,45 +1,6 @@
-//string
-"abc";
-'abc';
-`abc ${}`;
+//Zapytaj ile ma subskrybcji
+//100 - srebrna, 1000 - złota, 10000 - diamentowa
 
-//number
-2
-2.33
-
-//boolean
-true/false
-
-undefined / null
-
-//array
-[]
-
-//object
-{}
-
-
-function myFnName(name, b = 'surname') {
-
-}
-
-const mySecName = (name, b) => {
-
-}
-
-myFnName(200, 'ad');
-mySecName();
-
-
-var oldType;
-
-const constType = {};
-constType.name = 'name';
-const arrayExample = [];
-arrayExample[0] = 'name';
-
-let letType;
-
-== //Operator porównania
-=== // Operator identyczności
-
+//Ile subów przybywa w ciągu miesiąca
+//Obliczyć ile przybędzie w ciągu roku
+//Ile wyświetleń w miesiąc i ile zarobi per rok - 1 wyświetlenie = 1gr
