@@ -19,5 +19,11 @@ if (subscribtion < 100) {
     alert("You have diamond award");
 }
 
+const monthSubscribtion = prompt("How many sub's do You achive every month?");
+console.log(monthSubscribtion);
+const nextYearAdd = 12 * monthSubscribtion;
+const nextYear = nextYearAdd + subscribtion;
+alert(`You will have ${nextYear} after one year!`);
+
 
 
