@@ -22,3 +22,8 @@ if (subscribers > 100 && subscribers < 1000) {
     const x = 100 - subscribers;
     alert(`You are: ${x} off from the Silver badge `);
 }
+
+const subPerMonth = prompt("How many subscribes arrives every months?");
+const perYear = 12 * subPerMonth;
+const nextYear = subscribers + perYear;
+alert(`In next year will be ${nextYear} subscribers`);
