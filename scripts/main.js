@@ -4,7 +4,7 @@
 //Ile subów przybywa w ciągu miesiąca
 //Obliczyć ile przybędzie w ciągu roku
 //Ile wyświetleń w miesiąc i ile zarobi per rok - 1 wyświetlenie = 1gr
-let subscribers, subPerMonth;
+let subscribers, subPerMonth, moneyYearly;
 
 do {
     subscribers = prompt("How many subscribers do you have?");
@@ -45,7 +45,16 @@ if (subscribers !== null) {
     const perYear = 12 * subPerMonth;
     const nextYear = subscribers + perYear;
     alert(`In next year will be ${nextYear} subscribers`);
-}
 
+
+    const views = parseInt(prompt("How many monthly views you have?"));
+    if (!isNaN(views)){
+        const moneyYearly = (views * 12) / 100;
+        alert(`In next year you will earn ${moneyYearly}zł from your channel`)
+    } else {
+        console.log("Wrong value");
+    }
+
+}
 
 
