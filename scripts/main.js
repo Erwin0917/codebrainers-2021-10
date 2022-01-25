@@ -51,16 +51,53 @@ function fillNumbers() {
 fillNumbers();
 console.log(numbers)
 
-const myDrownNumbers = [];
+let myDrownNumbers = [];
 function drownNumbers() {
-    for (let i = 1; i <= 6; i++) {
+    for (let i = 1; i <= 2; i++) {
         const indexNumber = getRandomNumberBetween(0,49 - i);
         const spliceCatcher = numbers.splice(indexNumber, 1);
         myDrownNumbers.push(...spliceCatcher);
 
     }
 }
+
 drownNumbers()
 console.log('myDrownNumbers', myDrownNumbers)
 console.log('numbers', numbers)
 
+let myNumbers = [27, 13];//, 11, 1, 9, 40];
+let counter = 0;
+
+const comparator = (a, b) => {
+    return a - b;
+}
+
+const compareArrays = (a, b) => {
+    if(a.length !== b.length){
+        return false;
+    }
+    for(let i = 0; i < a.length; i++){
+        if(a[i] !== b[i]){
+            return false;
+        }
+    }
+
+    return true;
+}
+
+myDrownNumbers = myDrownNumbers.sort(comparator);
+myNumbers = myNumbers.sort(comparator);
+
+// console.log('-------------');
+// console.log(myDrownNumbers);
+// console.log(myNumbers);
+
+// do{
+//     counter++;
+//     drownNumbers();
+//     console.log('-------------');
+//     console.log(myDrownNumbers);
+//     console.log(myNumbers);
+// }while (!compareArrays(myDrownNumbers, myNumbers))
+
+console.log(counter);
