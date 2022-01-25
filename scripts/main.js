@@ -1,100 +1,36 @@
-//Zapytaj ile ma subskrybcji
-//100 - srebrna, 1000 - złota, 10000 - diamentowa
-
-//Ile subów przybywa w ciągu miesiąca
-//Obliczyć ile przybędzie w ciągu roku
-//Ile wyświetleń w miesiąc i ile zarobi per rok - 1 wyświetlenie = 1gr
-
-function youtubeExercise() {
-    let subscribers, subPerMonth, moneyYearly;
-
-    do {
-        subscribers = prompt('How many subscribers do you have?');
-        console.log(subscribers);
-        if (subscribers === null) {
-            break;
-        }
-
-        subscribers = parseInt(subscribers);
-        if (isNaN(subscribers)) {
-            alert('Write a number');
-        }
-    } while (isNaN(subscribers));
-
-    if (subscribers !== null) {
-        if (subscribers > 100 && subscribers < 1000) {
-            alert('Silver badge');
-
-        } else if (subscribers >= 1000 && subscribers < 10000) {
-            alert('Gold badge');
-
-
-        } else if (subscribers >= 10000) {
-            alert('Diamond badge');
-
-        } else {
-            const x = 100 - subscribers;
-            alert(`You are: ${x} off from the Silver badge `);
-        }
-
-        do {
-            subPerMonth = parseInt(prompt('How many subscribes arrives every months?'));
-            if (isNaN(subPerMonth)) {
-                alert('Write a number');
-            }
-        } while (isNaN(subPerMonth));
-
-        const perYear = 12 * subPerMonth;
-        const nextYear = subscribers + perYear;
-        alert(`In next year will be ${nextYear} subscribers`);
-
-
-        const views = parseInt(prompt('How many monthly views you have?'));
-        if (!isNaN(views)) {
-            const moneyYearly = (views * 12) / 100;
-            alert(`In next year you will earn ${moneyYearly}zł from your channel`);
-        } else {
-            console.log('Wrong value');
-        }
-
-    }
+function between(min, max) {
+    return Math.floor(Math.random() * (max - min * 1) + min);
 }
 
-//Ilość pytań - 10
-//Mnożenie od 1 do 10
-//W consoli po każdym pytaniu informacje czy odpowiedź jest poprawna
-//Po wszystkich pytaniach podsumowanie ile było poprawnych odpowiedzi
-//Test zaliczony jeśli ponad połowa odpowiedzi jest poprawna
+const arr = [];
+const nonEmptyArr = ['kasia', 'janek', 'zosia', [1, 3, 4]];
+const arrExample = new Array(5);
 
-// Math.floor Math.ceil Math.round
+// console.log(nonEmptyArr[0]);
 
-let correctAnswers = 0;
-const questionsCount = 4;
+// console.log(arrExample);
 
-for (let i = 0; i < questionsCount; i++) {
-    const firstNumber = Math.ceil(10 * Math.random());
-    const secondNumber = Math.ceil(10 * Math.random());
-    const answer = parseInt(prompt(`Question ${i+1}: How much is: ${firstNumber} * ${secondNumber}?`));
+//push() pop()
+console.log(nonEmptyArr.push('dawid'));
+console.log(nonEmptyArr);
 
-    if(isNaN(answer)){
-        alert('Your answer isn\'t a number');
-        break;
-    }
+console.log(nonEmptyArr.pop());
+console.log(nonEmptyArr);
 
-    const checkedAnswer = answer === (firstNumber * secondNumber);
-    console.log(`Your answer is ${checkedAnswer}`);
+//unshift() shift()
+console.log(nonEmptyArr.unshift('ernest'));
+console.log(nonEmptyArr);
 
-    if(checkedAnswer){
-        correctAnswers++;
-    }
+nonEmptyArr[3][2];
 
-}
+console.log("========================");
+console.log(nonEmptyArr.splice(2, 2));
+const clone = nonEmptyArr;
+console.log(nonEmptyArr);
 
-let testResult = "didn't pass";
-if(correctAnswers / questionsCount >= 0.5){
-    testResult = "did pass";
-}
+console.log("========================");
+console.log(nonEmptyArr.indexOf('ernest'));
+console.log(nonEmptyArr.indexOf('adam'));
 
-
-alert(`You have: ${correctAnswers} correct answers and you ${testResult} the test`);
-
+console.log(nonEmptyArr.includes('ernest'));
+console.log(nonEmptyArr.includes('adam'));
