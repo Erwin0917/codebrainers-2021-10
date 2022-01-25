@@ -68,11 +68,33 @@ function youtubeExercise() {
 
 // Math.floor Math.ceil Math.round
 
-for (let i = 0; i < 10; i++) {
+let correctAnswers = 0;
+const questionsCount = 4;
+
+for (let i = 0; i < questionsCount; i++) {
     const firstNumber = Math.ceil(10 * Math.random());
     const secondNumber = Math.ceil(10 * Math.random());
-    const answer = parseInt(prompt(`Qestion ${i+1}: How much is: ${firstNumber} * ${secondNumber}?`));
+    const answer = parseInt(prompt(`Question ${i+1}: How much is: ${firstNumber} * ${secondNumber}?`));
+
+    if(isNaN(answer)){
+        alert('Your answer isn\'t a number');
+        break;
+    }
+
     const checkedAnswer = answer === (firstNumber * secondNumber);
-    console.log(`Your answer is ${checkedAnswer}`)
+    console.log(`Your answer is ${checkedAnswer}`);
+
+    if(checkedAnswer){
+        correctAnswers++;
+    }
+
 }
+
+let testResult = "didn't pass";
+if(correctAnswers / questionsCount >= 0.5){
+    testResult = "did pass";
+}
+
+
+alert(`You have: ${correctAnswers} correct answers and you ${testResult} the test`);
 
