@@ -59,7 +59,6 @@ function drownNumbers() {
         myDrownNumbers.push(...spliceCatcher);
 
     }
-
 }
 drownNumbers()
 console.log('myDrownNumbers', myDrownNumbers)
