@@ -49,6 +49,7 @@ function youtubeExercise() {
         alert(`In next year will be ${nextYear} subscribers`);
 
 
+
         const views = parseInt(prompt('How many monthly views you have?'));
         if (!isNaN(views)) {
             const moneyYearly = (views * 12) / 100;
@@ -58,7 +59,7 @@ function youtubeExercise() {
         }
 
     }
-}
+
 
 //Ilość pytań - 10
 //Mnożenie od 1 do 10
@@ -66,5 +67,15 @@ function youtubeExercise() {
 //Po wszystkich pytaniach podsumowanie ile było poprawnych odpowiedzi
 //Test zaliczony jeśli ponad połowa odpowiedzi jest poprawna
 
+// Math.floor Math.ceil Math.round
 
+}
+
+for (let i = 0; i < 10; i++) {
+    const firstNumber = Math.ceil(10 * Math.random());
+    const secondNumber = Math.ceil(10 * Math.random());
+    const answer = parseInt(prompt(`Qestion ${i+1}: How much is: ${firstNumber} * ${secondNumber}?`));
+    const checkedAnswer = answer === (firstNumber * secondNumber);
+    console.log(`Your answer is ${checkedAnswer}`)
+}
 
