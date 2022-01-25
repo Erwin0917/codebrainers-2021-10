@@ -66,5 +66,13 @@ function youtubeExercise() {
 //Po wszystkich pytaniach podsumowanie ile było poprawnych odpowiedzi
 //Test zaliczony jeśli ponad połowa odpowiedzi jest poprawna
 
+// Math.floor Math.ceil Math.round
 
+for (let i = 0; i < 10; i++) {
+    const firstNumber = Math.ceil(10 * Math.random());
+    const secondNumber = Math.ceil(10 * Math.random());
+    const answer = parseInt(prompt(`Qestion ${i+1}: How much is: ${firstNumber} * ${secondNumber}?`));
+    const checkedAnswer = answer === (firstNumber * secondNumber);
+    console.log(`Your answer is ${checkedAnswer}`)
+}
 
