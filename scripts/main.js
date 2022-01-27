@@ -42,8 +42,8 @@ function array () {
 // Podajemy kupon z wpisanymi naszymi 6 numerami
 //Ile razy ma miejsce losowanie aby nasze 6 cyfr było wylosowane?
 
-
-const comparator = (a, b) => {
+function lottery() {
+    const comparator = (a, b) => {
     return a - b;
 }
 
@@ -113,3 +113,39 @@ do {
 } while (!jackpot)
 
 console.log('counter', counter);
+}
+// lottery()
+
+
+
+// const mapCallback = (value, index) => {
+//     // console.log('value', value);
+//     // console.log('index', index);
+//     return value;
+// }
+//
+// myNumbers.forEach(function (value, index) {
+//     // console.log('value', value);
+//     // console.log('index', index);
+// });
+//
+// const newArray = myNumbers.map((value, index) => {
+//     // console.log('value', value);
+//     // console.log('index', index);
+//     return value;
+// });
+//
+// myNumbers.map(mapCallback);
+//
+// //
+// const filteredArray = myNumbers.filter(value => value === 13);
+//
+// // console.log('filteredArray', filteredArray);
+// // myNumbers.sort()
+// const findArray = myNumbers.find(value => value === 13);
+// console.log('findArray', findArray);
+
+
+
+const arrayOfString = ['krystian', 'jaś', 'przemysław', 'ala', 'barnaba', 'kasia'];
+
