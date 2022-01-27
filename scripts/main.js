@@ -147,5 +147,25 @@ console.log('counter', counter);
 
 
 
-const arrayOfString = ['krystian', 'jaś', 'przemysław', 'ala', 'barnaba', 'kasia'];
+const arrayOfString = ['krystian', 'jaś', 'przemysław', 'ala', 'barnaba', 'kasia', 3, 4, 7, '9', NaN, null, undefined];
 
+const nameLengthMoreThanFive = name => (typeof name === 'string' && name.length > 5);
+
+
+const names = arrayOfString.filter(nameLengthMoreThanFive);
+
+function filterNumbers(value){
+    if(typeof value === 'number'){
+        return value;
+    }
+}
+
+function square(number){
+    return number * number;
+}
+
+const arrayOfNumbers = arrayOfString.filter(filterNumbers).map(square);
+
+
+console.log(names);
+console.log(arrayOfNumbers);
