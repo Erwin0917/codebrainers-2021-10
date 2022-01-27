@@ -42,31 +42,6 @@ function array () {
 // Podajemy kupon z wpisanymi naszymi 6 numerami
 //Ile razy ma miejsce losowanie aby nasze 6 cyfr było wylosowane?
 
-const numbers = [];
-function fillNumbers() {
-    for (let i = 1; i <= 49; i++) {
-        numbers.push(i);
-    }
-}
-fillNumbers();
-console.log(numbers)
-
-let myDrownNumbers = [];
-function drownNumbers() {
-    for (let i = 1; i <= 2; i++) {
-        const indexNumber = getRandomNumberBetween(0,49 - i);
-        const spliceCatcher = numbers.splice(indexNumber, 1);
-        myDrownNumbers.push(...spliceCatcher);
-
-    }
-}
-
-drownNumbers()
-console.log('myDrownNumbers', myDrownNumbers)
-console.log('numbers', numbers)
-
-let myNumbers = [27, 13];//, 11, 1, 9, 40];
-let counter = 0;
 
 const comparator = (a, b) => {
     return a - b;
@@ -74,7 +49,8 @@ const comparator = (a, b) => {
 
 const compareArrays = (a, b) => {
     if(a.length !== b.length){
-        return false;
+        console.error('Wrong arrays length');
+        return 'wrong arrays';
     }
     for(let i = 0; i < a.length; i++){
         if(a[i] !== b[i]){
@@ -85,19 +61,55 @@ const compareArrays = (a, b) => {
     return true;
 }
 
-myDrownNumbers = myDrownNumbers.sort(comparator);
-myNumbers = myNumbers.sort(comparator);
 
-// console.log('-------------');
-// console.log(myDrownNumbers);
-// console.log(myNumbers);
 
-// do{
-//     counter++;
-//     drownNumbers();
-//     console.log('-------------');
-//     console.log(myDrownNumbers);
-//     console.log(myNumbers);
-// }while (!compareArrays(myDrownNumbers, myNumbers))
+function fillNumbers() {
+    const numbers = [];
+    for (let i = 1; i <= 49; i++) {
+        numbers.push(i);
+    }
+    return numbers;
+}
 
-console.log(counter);
+function drownNumbers(numbers) {
+    const myDrownNumbers = [];
+    for (let i = 1; i <= 6; i++) {
+        const indexNumber = getRandomNumberBetween(0, 49 - i);
+        const spliceCatcher = numbers.splice(indexNumber, 1);
+        myDrownNumbers.push(...spliceCatcher);
+    }
+    return myDrownNumbers;
+}
+
+
+
+// Lottery ----------
+
+
+let myNumbers = [27, 13, 11, 1, 9, 40];
+let counter = 0;
+let jackpot = false;
+
+do {
+    counter++;
+
+    const numbers = fillNumbers();
+    const myDrownNumbers = drownNumbers(numbers);
+
+    const sortedMyDrownNumbers = myDrownNumbers.sort(comparator);
+    const sortedMyNumbers = myNumbers.sort(comparator);
+    jackpot = compareArrays(sortedMyDrownNumbers, sortedMyNumbers);
+
+    if (jackpot === 'wrong arrays') {
+        break;
+    }
+
+    // console.log('-------------');
+    // console.log('init numbers', numbers);
+    // console.log('myDrownNumbers', myDrownNumbers);
+    // console.log('myDrownNumbers length', myDrownNumbers.length);
+    // console.log('myNumbers', myNumbers);
+    // console.log('='.repeat(20));
+} while (!jackpot)
+
+console.log('counter', counter);
