@@ -29,7 +29,10 @@ class Car {
            if (speed <= this.maximumSpeed) {
                this.speed = speed;
            } else {
-               console.log("It is too much speed. Set new one.");
+               // console.log("It is too much speed. Set new one.");
+               // console.error('It is too much speed');
+               throw new Error('It is too much speed');
+
            }
         }
     }
@@ -60,9 +63,15 @@ class Car {
 
 
 const car1 = new Car();
-car1.setSpeed(200);
-// car1.setSpeed(301);
-console.log('car1 setSpeed with number', car1);
+
+try {
+    car1.setSpeed(400);
+    // car1.setSpeed(301);
+    console.log('car1 setSpeed with number', car1)
+
+} catch (error) {
+    console.log(error);
+}
 
 car1.accelerate(500)
 console.log('car1 accelerate', car1);
@@ -71,6 +80,7 @@ car1.decelerate(300)
 console.log('car1 decelerate', car1);
 
 
+console.log(car1 instanceof Car);
 
 
 
