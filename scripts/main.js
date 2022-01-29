@@ -13,7 +13,6 @@ function isTeamAlive(team) {
             teamIsAlive = true;
         }
     }
-
     return teamIsAlive;
 }
 
@@ -24,7 +23,6 @@ const villain1 = new Villain(getRandomNumberBetween(50,100), getRandomNumberBetw
 const hero2 = new Hero(getRandomNumberBetween(50,100), getRandomNumberBetween(1,5));
 const villain2 = new Villain(getRandomNumberBetween(50,100), getRandomNumberBetween(1,5));
 
-
 heroTeam.push(hero, hero1, hero2);
 villainTeam.push(villain, villain1, villain2);
 
@@ -33,23 +31,38 @@ function duel(attacker,defender, attackerTeam, defenderTeam,attackerIndex, defen
         console.log("Attacker or defender are not instance of Person Class")
         return;
     }
+    console.log(`Attacker:`, attacker);
+    console.log(`Defender:`, defender);
+
     attacker.attack(defender, getRandomNumberBetween(10,25));
+
     if(!defender.isAlive()){
         defenderTeam.splice(defenderIndex, 1);
-
     }
+
+    if (!isTeamAlive(defenderTeam)) {
+        return;
+    }
+
     defender.attack(attacker, getRandomNumberBetween(10,25));
     if(!attacker.isAlive()){
         attackerTeam.splice(attackerIndex, 1);
     }
+
 }
 console.log((heroTeam.length > 0 && villainTeam.length > 0))
 while(heroTeam.length > 0 && villainTeam.length > 0) {
-    console.log([...heroTeam])
-    const heroIndex = getRandomNumberBetween(0,heroTeam.length - 1);
-    console.log([...villainTeam])
-    const villainIndex = getRandomNumberBetween(0,villainTeam.length - 1);
-    duel(heroTeam[heroIndex],villainTeam[villainIndex],heroTeam, villainTeam,heroIndex, villainIndex)
+    console.log(JSON.parse(JSON.stringify(heroTeam)));
+    // const heroIndex = getRandomNumberBetween(0,heroTeam.length - 1);
+    console.log(JSON.parse(JSON.stringify(villainTeam)));
+    // const villainIndex = getRandomNumberBetween(0,villainTeam.length - 1);
+
+    const attackerTeam = Math.random() < 0.5 ? heroTeam : villainTeam;
+    const defenderTeam = attackerTeam.find(person => person instanceof Hero) !== undefined ? villainTeam : heroTeam;
+    const attackerIndex = getRandomNumberBetween(0,attackerTeam.length - 1);
+    const defenderIndex = getRandomNumberBetween(0,attackerTeam.length - 1);
+
+    duel(attackerTeam[attackerIndex],defenderTeam[defenderIndex],attackerTeam, defenderTeam,attackerIndex, defenderIndex)
 }
 console.log("Team Hero", heroTeam)
 console.log("Team villain", villainTeam)
