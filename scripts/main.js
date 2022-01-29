@@ -1,10 +1,9 @@
-import {Hero, Person, Villain} from './person.js';
+import { Hero, Person, Villain } from './person.js';
+import { UiController } from './uiController.js';
 
 function getRandomNumberBetween(min, max) {
     return Math.floor(Math.random() * (max - min * 1) + min);
 }
-const heroTeam = [];
-const villainTeam = [];
 
 function isTeamAlive(team) {
     let teamIsAlive = false;
@@ -16,23 +15,25 @@ function isTeamAlive(team) {
     return teamIsAlive;
 }
 
-const hero = new Hero(getRandomNumberBetween(50,100), getRandomNumberBetween(1,5));
-const villain = new Villain(getRandomNumberBetween(50,100), getRandomNumberBetween(1,5));
-const hero1 = new Hero(getRandomNumberBetween(50,100), getRandomNumberBetween(1,5));
-const villain1 = new Villain(getRandomNumberBetween(50,100), getRandomNumberBetween(1,5));
-const hero2 = new Hero(getRandomNumberBetween(50,100), getRandomNumberBetween(1,5));
-const villain2 = new Villain(getRandomNumberBetween(50,100), getRandomNumberBetween(1,5));
+function fillTeamsByCharacters(teamLength, personType) {
+    const team = [];
 
-heroTeam.push(hero, hero1, hero2);
-villainTeam.push(villain, villain1, villain2);
+    for (let i = 0; i < teamLength; i++) {
+        if (personType === 'hero') {
+            team.push(new Hero(getRandomNumberBetween(50,100), getRandomNumberBetween(1,5)));
+        } else {
+            team.push(new Villain(getRandomNumberBetween(50,100), getRandomNumberBetween(1,5)));
+        }
+    }
+
+    return team;
+}
 
 function duel(attacker,defender, attackerTeam, defenderTeam,attackerIndex, defenderIndex) {
     if(!(attacker instanceof Person)  || !(defender instanceof Person)){
         console.log("Attacker or defender are not instance of Person Class")
         return;
     }
-    console.log(`Attacker:`, attacker);
-    console.log(`Defender:`, defender);
 
     attacker.attack(defender, getRandomNumberBetween(10,25));
 
@@ -50,30 +51,34 @@ function duel(attacker,defender, attackerTeam, defenderTeam,attackerIndex, defen
     }
 
 }
-console.log((heroTeam.length > 0 && villainTeam.length > 0))
-while(heroTeam.length > 0 && villainTeam.length > 0) {
-    console.log(JSON.parse(JSON.stringify(heroTeam)));
-    // const heroIndex = getRandomNumberBetween(0,heroTeam.length - 1);
-    console.log(JSON.parse(JSON.stringify(villainTeam)));
-    // const villainIndex = getRandomNumberBetween(0,villainTeam.length - 1);
 
-    const attackerTeam = Math.random() < 0.5 ? heroTeam : villainTeam;
-    const defenderTeam = attackerTeam.find(person => person instanceof Hero) !== undefined ? villainTeam : heroTeam;
-    const attackerIndex = getRandomNumberBetween(0,attackerTeam.length - 1);
-    const defenderIndex = getRandomNumberBetween(0,attackerTeam.length - 1);
+function gameInit() {
+    const uiController = new UiController();
 
-    duel(attackerTeam[attackerIndex],defenderTeam[defenderIndex],attackerTeam, defenderTeam,attackerIndex, defenderIndex)
+
+    const heroTeam = fillTeamsByCharacters(3, 'hero');
+    const villainTeam = fillTeamsByCharacters(3, 'villain');
+
+    while(isTeamAlive(heroTeam) && isTeamAlive(villainTeam)) {
+        const attackerTeam = Math.random() < 0.5 ? heroTeam : villainTeam;
+        const defenderTeam = attackerTeam.find(person => person instanceof Hero) !== undefined ? villainTeam : heroTeam;
+        const attackerIndex = getRandomNumberBetween(0,attackerTeam.length - 1);
+        const defenderIndex = getRandomNumberBetween(0,attackerTeam.length - 1);
+
+        duel(attackerTeam[attackerIndex],defenderTeam[defenderIndex],attackerTeam, defenderTeam,attackerIndex, defenderIndex)
+    }
+
+
+
+    console.log("Team Hero", heroTeam)
+    console.log("Team villain", villainTeam)
 }
-console.log("Team Hero", heroTeam)
-console.log("Team villain", villainTeam)
-// while(hero.isAlive() && villain.isAlive()){
-//     if(villain.isAlive()){
-//         villain.attack(hero, getRandomNumberBetween(10,25));
-//     }
-//     if(hero.isAlive()){
-//         hero.attack(villain, getRandomNumberBetween(15,25));
-//     }
-//     console.log("Hero has " + hero.hitPoints + " hp left")
-//     console.log("Villain has " + villain.hitPoints + " hp left")
-// }
+
+gameInit();
+
+
+
+
+
+
 
