@@ -1,4 +1,4 @@
-class Person {
+export  class Person {
     constructor(hitPoints = 0, strength = 0) {
         this.name = '';
         this.hitPoints = hitPoints;
