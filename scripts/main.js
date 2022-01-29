@@ -1,49 +1,8 @@
+import { Hero, Villain } from './person.js';
+
 function getRandomNumberBetween(min, max) {
     return Math.floor(Math.random() * (max - min * 1) + min);
 }
-
-class Person {
-    constructor(hitPoints = 0, strength = 0) {
-        this.name = '';
-        this.hitPoints = hitPoints;
-        this.strength= strength;
-    }
-
-    isAlive() {
-        return this.hitPoints > 0;
-    }
-
-    setHitPoints(hp = 0) {
-        this.hitPoints = hp > 0 ? hp : 0;
-
-
-    }
-
-    attack(target, power) {
-        const damageFactor = Math.round(this.strength * 0.2);
-        const damage = target.hitPoints - (power + damageFactor);
-        target.setHitPoints(damage);
-
-    }
-}
-
-
-class Hero extends Person {
-    constructor(hitPoints, strength) {
-        super(hitPoints);
-        this.strength= strength
-    }
-}
-
-class Villain extends Person {
-    constructor(hitPoints, strength) {
-        super(hitPoints);
-        this.strength = strength
-    }
-}
-
-
-
 
 
 const hero = new Hero(getRandomNumberBetween(50,100), getRandomNumberBetween(1,5));
