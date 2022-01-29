@@ -9,11 +9,11 @@ const villainTeam = [];
 function isTeamAlive(team) {
     let teamIsAlive = false;
     for (const element of team) {
-        console.log(element);
         if (element.isAlive()) {
             teamIsAlive = true;
         }
     }
+
     return teamIsAlive;
 }
 
@@ -43,9 +43,11 @@ function duel(attacker,defender, attackerTeam, defenderTeam,attackerIndex, defen
         attackerTeam.splice(attackerIndex, 1);
     }
 }
-
-while(isTeamAlive(heroTeam) && isTeamAlive(villainTeam)){
+console.log((heroTeam.length > 0 && villainTeam.length > 0))
+while(heroTeam.length > 0 && villainTeam.length > 0) {
+    console.log([...heroTeam])
     const heroIndex = getRandomNumberBetween(0,heroTeam.length - 1);
+    console.log([...villainTeam])
     const villainIndex = getRandomNumberBetween(0,villainTeam.length - 1);
     duel(heroTeam[heroIndex],villainTeam[villainIndex],heroTeam, villainTeam,heroIndex, villainIndex)
 }
