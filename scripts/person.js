@@ -37,3 +37,4 @@ export class Villain extends Person {
         this.strength = strength
     }
 }
+
