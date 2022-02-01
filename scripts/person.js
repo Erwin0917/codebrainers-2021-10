@@ -4,6 +4,7 @@ export  class Person {
         this.hitPoints = hitPoints;
         this.strength= strength;
     }
+    
 
     isAlive() {
         return this.hitPoints > 0;
@@ -11,7 +12,6 @@ export  class Person {
 
     setHitPoints(hp = 0) {
         this.hitPoints = hp > 0 ? hp : 0;
-
 
     }
 
