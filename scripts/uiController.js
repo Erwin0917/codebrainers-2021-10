@@ -13,6 +13,8 @@ export class UiController {
         this.strengthRandomButton = this.uiWrapper.querySelector('#random-strength');
         this.hpInput = this.uiWrapper.querySelector('#hitpoints');
         this.hpRandomButton = this.uiWrapper.querySelector('#random-hitpoints');
+        this.randomCharacterButton = this.uiWrapper.querySelector('#random-character');
+        this.selectTeamInput = this.uiWrapper.querySelector('#default_select');
 
         this.initAllEventListeners();
     }
@@ -24,7 +26,7 @@ export class UiController {
         });
 
         this.nameRandomButton.addEventListener('click', () => {
-            this.nameInput.value = charName[getRandomNumberBetween(0, 24)];
+            this.fillNameInput(charName[getRandomNumberBetween(0, 24)]);
             console.log('Random Name button click');
         });
 
@@ -33,7 +35,7 @@ export class UiController {
         });
 
         this.weaponRandomButton.addEventListener('click', () => {
-            this.weaponInput.value = charWeapon[getRandomNumberBetween(0, 24)];
+            this.fillWeaponInput(charWeapon[getRandomNumberBetween(0, 24)]);
             console.log('Random weapon button click');
         });
 
@@ -42,7 +44,7 @@ export class UiController {
         });
 
         this.strengthRandomButton.addEventListener('click', () => {
-            this.strengthInput.value = getRandomNumberBetween(1, 10);
+            this.fillStrengthInput(getRandomNumberBetween(1, 10));
             console.log('Strength Name button click');
         });
 
@@ -51,9 +53,46 @@ export class UiController {
         });
 
         this.hpRandomButton.addEventListener('click', () => {
-            this.hpInput.value = getRandomNumberBetween(50, 100);
+            this.fillHpInput(getRandomNumberBetween(50, 100));
             console.log('Random hp button click');
         });
+
+
+        this.randomCharacterButton.addEventListener('click', this.fillAllInputs);
+    };
+
+    fillHpInput = (newHpValue) => {
+        this.hpInput.value = newHpValue;
+    };
+
+    fillStrengthInput = (newStrengthValue) => {
+        this.strengthInput.value = newStrengthValue;
+    };
+
+    fillWeaponInput = (newWeaponInput) => {
+        this.weaponInput.value = newWeaponInput;
+    };
+
+    fillNameInput = (newNameInput) => {
+        this.nameInput.value = newNameInput;
+    };
+
+    randomTeam = () => {
+        const teamValue = Math.random();
+        if (teamValue < 0.5) {
+            this.selectTeamInput.value = 'teamHero';
+        } else {
+            this.selectTeamInput.value = 'teamVillain';
+        }
+
+    };
+
+    fillAllInputs = () => {
+        this.fillHpInput(getRandomNumberBetween(50, 100));
+        this.fillStrengthInput(getRandomNumberBetween(1, 10));
+        this.fillWeaponInput(charWeapon[getRandomNumberBetween(0, 24)]);
+        this.fillNameInput(charName[getRandomNumberBetween(0, 24)]);
+        this.randomTeam()
     };
 }
 
