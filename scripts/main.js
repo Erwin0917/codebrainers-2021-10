@@ -1,7 +1,7 @@
 import { Hero, Person, Villain } from './person.js';
 import { UiController } from './uiController.js';
 
-function getRandomNumberBetween(min, max) {
+export function getRandomNumberBetween(min, max) {
     return Math.floor(Math.random() * (max - min * 1) + min);
 }
 
