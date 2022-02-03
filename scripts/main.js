@@ -53,7 +53,7 @@ function duel(attacker,defender, attackerTeam, defenderTeam,attackerIndex, defen
 }
 
 function gameInit() {
-    const uiController = new UiController();
+    const uiController = new UiController("ui__wrapper");
 
 
     const heroTeam = fillTeamsByCharacters(3, 'hero');
@@ -63,7 +63,7 @@ function gameInit() {
         const attackerTeam = Math.random() < 0.5 ? heroTeam : villainTeam;
         const defenderTeam = attackerTeam.find(person => person instanceof Hero) !== undefined ? villainTeam : heroTeam;
         const attackerIndex = getRandomNumberBetween(0,attackerTeam.length - 1);
-        const defenderIndex = getRandomNumberBetween(0,attackerTeam.length - 1);
+        const defenderIndex = getRandomNumberBetween(0,defenderTeam.length - 1);
 
         duel(attackerTeam[attackerIndex],defenderTeam[defenderIndex],attackerTeam, defenderTeam,attackerIndex, defenderIndex)
     }

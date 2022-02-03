@@ -1,64 +1,122 @@
 export class UiController {
-    constructor() {
-        const nameInput = document.querySelector('#name');
-        const nameRandomButton = document.querySelector('#random-name');
-        const weaponInput = document.querySelector('#weapon');
-        const weaponRandomButton = document.querySelector('#random-weapon');
-        const strengthInput = document.querySelector('#strength');
-        const strengthRandomButton = document.querySelector('#random-strength');
-        const hitpointsInput = document.querySelector('#hitpoints');
-        const hitpointsRandomButton = document.querySelector('#random-hitpoints');
-        const startBattleButton = document.querySelector('#start-battle');
-        const addCharacterButton = document.querySelector('#add-character');
-        const randomDataButton = document.querySelector('#random-character');
-        // const selectTeam = document.querySelector();
+    constructor(uiWrapperHtmlClass) {
+        this.uiWrapper = document.querySelector(uiWrapperHtmlClass);
+
+        // this.nameInput = this.uiWrapper.querySelector('#name');
+        this.nameRandomButton = this.uiWrapper.querySelector('#random-name');
+        this.weaponInput = this.uiWrapper.querySelector('#weapon');
+        this.weaponRandomButton = this.uiWrapper.querySelector('#random-weapon');
+        this.strengthInput = this.uiWrapper.querySelector('#strength');
+        this.strengthRandomButton = this.uiWrapper.querySelector('#random-strength');
+        this.hitpointsInput = this.uiWrapper.querySelector('#hitpoints');
+        this.hitpointsRandomButton = this.uiWrapper.querySelector('#random-hitpoints');
+
+        this.randomCharacterButton = this.uiWrapper.querySelector('#random-character');
 
 
+        this.addEventListeners()
+
+    }
+//metoda dodająca listenery aby w constructorze nie było syfu
+    addEventListeners = () => {
         //Sekcja z inputem////////////////////////////////////////////////////////////////////////
-        nameInput.addEventListener('change', () => {
+        this.nameInput.addEventListener('change', () => {
             console.log('Name input was change');
         })
-        weaponInput.addEventListener('change', () => {
+        this.weaponInput.addEventListener('change', () => {
             console.log('Weapon input was changed');
         })
-        strengthInput.addEventListener('change', () => {
+        this.strengthInput.addEventListener('change', () => {
             console.log('Strength input was changed');
         })
-        hitpointsInput.addEventListener('change', () => {
+        this.hitpointsInput.addEventListener('change', () => {
             console.log('hp input was changed');
         })
 
-      //TODO: na click uzupełnij nameInput losowym imieniem
-
         //Sekcja z kliknięciem//////////////////////////////////////////////////////////////
+        function getRandomNumberBetween(min, max) {
+            return Math.floor(Math.random() * (max - min * 1) + min);
+        }
 
-        nameRandomButton.addEventListener('click', () => {
+        this.nameRandomButton.addEventListener('click', () => {
+            this.fillNameInput(charName[Math.floor(Math.random() * charName.length)]);
             console.log('Random Name button click');
-
-                const names = ['Ala', 'Ola', 'Ela']
-                const randomName = names[Math.floor(Math.random() * names.length)];
-                console.log(randomName);
-
         })
-        weaponRandomButton.addEventListener('click', () => {
+
+        this.weaponRandomButton.addEventListener('click', () => {
+            this.fillWeaponInput(charWeapon[getRandomNumberBetween(0,24)])
             console.log('Random Weapon button click');
+
         })
-        strengthRandomButton.addEventListener('click', () => {
+
+        this.strengthRandomButton.addEventListener('click', () => {
+            this.fillStrengthInput(getRandomNumberBetween(1,10));
             console.log('Random Strength button click');
         })
-        hitpointsRandomButton.addEventListener('click', () => {
+
+        this.hitpointsRandomButton.addEventListener('click', () => {
+            this.fillHitpointsInput(getRandomNumberBetween(50,100))
             console.log('Random hp button click');
         })
-        startBattleButton.addEventListener('click', () => {
-            console.log('Start Battle clicked')
-        })
-        addCharacterButton.addEventListener('click', () => {
-            console.log('Add Character clicked')
-        })
-        randomDataButton.addEventListener('click', () => {
-            console.log('Random Data clicked')
-        })
 
+        //Mozna tutaj  poniżej poprzeklejać po prostu logikę z góry np
+        // this.hitpointsInput.value = bla bla bla
+        //this.nameInput.value = bla bla bla ale mozna też inaczej
+        this.randomCharacterButton.addEventListener('click', this.fillAllInputs);
+    };
 
-    }
+   fillHitpointsInput = (newHpValue) => {
+       this.hitpointsInput.value = newHpValue;
+
+   }
+
+   fillStrengthInput = (newStregthValue) => {
+       this.strengthInput.value = newStregthValue;
+   }
+
+   fillWeaponInput = (newWeaponValue) => {
+       this.weaponInput.value = newWeaponValue;
+
+   }
+
+   fillNameInput = (newNameValue) => {
+       this.nameInput.value = newNameValue;
+
+   }
+
+   fillAllInputs = () => {
+       this.fillHitpointsInput(getRandomNumberBetween(50,100));
+       this.fillStrengthInput(getRandomNumberBetween(1,10));
+       this.fillWeaponInput(charWeapon[getRandomNumberBetween(0,24)]);
+       this.fillNameInput(charName[Math.floor(Math.random() * charName.length)]);
+
+   }
 }
+
+const charName = ['Harry', 'Ross',
+    'Bruce', 'Cook',
+    'Carolyn', 'Morgan',
+    'Albert', 'Walker',
+    'Randy', 'Reed',
+    'Larry', 'Barnes',
+    'Lois', 'Wilson',
+    'Jesse', 'Campbell',
+    'Ernest', 'Rogers',
+    'Theresa', 'Patterson',
+    'Henry', 'Simmons',
+    'Michelle', 'Perry',
+    'Frank'];
+
+const charWeapon = ['Brooks',
+    'Rachel', 'Edwards',
+    'Christopher', 'Perez',
+    'Thomas', 'Baker',
+    'Sara', 'Moore',
+    'Chris', 'Bailey',
+    'Roger', 'Johnson',
+    'Marilyn', 'Thompson',
+    'Anthony', 'Evans',
+    'Julie', 'Hall',
+    'Paula', 'Phillips',
+    'Annie', 'Hernandez',
+    'Dorothy', 'Murphy'];
