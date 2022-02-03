@@ -63,7 +63,7 @@ export class UiController {
 
         this.addCharacterButton.addEventListener('click', this.readInputs);
         this.randomCharacterButton.addEventListener('click', this.fillAllInputs);
-        this.startGame.addEventListener('click', this.gameController.startBattle);
+        // this.startGame.addEventListener('click', this.gameController.startBattle);
     };
 
     fillHpInput = (newHpValue) => {
@@ -157,7 +157,21 @@ export class UiController {
         teamWrapper.appendChild(characterWrapper);
     };
 
+    refreshTeams = (teamHero, teamVillain) => {
+        document.querySelector("#hero-team").innerHTML ='' ;
+        document.querySelector("#villain-team").innerHTML= '';
+        teamHero.forEach(  hero => {
+            if (hero instanceof Hero) {
+                this.addCharacterToWorld(hero.name, hero.weapon, hero.strength, hero.hitPoints, "teamHero");
+            }
+        teamVillain.forEach( villain => {
+            if (villain instanceof Villain) {
+                this.addCharacterToWorld(villain.name, villain.weapon, villain.strength, villain.hitPoints, 'teamVillain');
+            }
+        })
 
+        } )
+    }
 }
 
 const charName = ['Harry', 'Ross',

@@ -25,6 +25,11 @@ function fillTeamsByCharacters(teamLength, personType) {
 function gameInit() {
     const gameController = new GameController();
     const uiController = new UiController('.ui__wrapper', gameController);
+    const startBattleButton = document.querySelector('#start-battle');
+    startBattleButton.addEventListener('click', () => {
+        gameController.startBattle(uiController.refreshTeams)
+
+    });
 
     console.log("Team Hero", gameController.heroTeam);
     console.log("Team villain", gameController.villainTeam);

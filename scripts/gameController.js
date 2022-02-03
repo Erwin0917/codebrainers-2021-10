@@ -17,7 +17,7 @@ export class GameController {
         this.villainTeam = [];
     }
 
-    startBattle = () => {
+    startBattle = (refreshCallback) => {
         while (isTeamAlive(this.heroTeam) && isTeamAlive(this.villainTeam)) {
             const attackerTeam = Math.random() < 0.5 ? this.heroTeam : this.villainTeam;
             const defenderTeam = attackerTeam.find(person => person instanceof Hero) !== undefined ? this.villainTeam : this.heroTeam;
@@ -25,7 +25,7 @@ export class GameController {
             const defenderIndex = getRandomNumberBetween(0, defenderTeam.length - 1);
 
             this.duel(attackerTeam[attackerIndex], defenderTeam[defenderIndex], attackerTeam, defenderTeam, attackerIndex, defenderIndex);
-
+            refreshCallback(this.heroTeam, this.villainTeam);
         }
 
         console.log('END', this.heroTeam, this.villainTeam);
