@@ -109,9 +109,12 @@ export class UiController {
         const characterTeam = this.selectTeamInput.value;
         if(characterName !== '' || characterWeapon !== '' || characterStrength !== '' || characterHp !== '' || characterTeam !== ''){
             this.addCharacterCallback(characterName, characterWeapon, characterStrength, characterHp, characterTeam);
+            return;
         }
         console.log('Wrong input value');
     }
+
+
 }
 
 const charName = ['Harry', 'Ross',
@@ -141,3 +144,20 @@ const charWeapon = ['Brooks',
     'Paula', 'Phillips',
     'Annie', 'Hernandez',
     'Dorothy', 'Murphy'];
+
+
+// <div className="character nes-container">
+//     <h2 className="name" id="char-name">Cynthia</h2>
+//     <button type="button" className="delete-char" id="delete-char">X</button>
+//     <div className="avatar__wrapper">
+//         <img className="avatar" src="https://rickandmortyapi.com/api/character/avatar/87.jpeg" alt="hero-avatar">
+//     </div>
+//     <div className="details__wrapper">
+//
+//         <p>Weapon: <span className="nes-text is-warning">Heartsnatcher</span></p>
+//         <p>Strength: <span className="nes-text is-success">54</span></p>
+//         <p>HitPoints: <span className="nes-text is-error">124</span></p>
+//
+//     </div>
+//     <progress className="nes-progress is-error" value="124" max="124"></progress>
+// </div>
