@@ -1,43 +1,42 @@
-import { Hero, Person, Villain } from './person.js';
-import { UiController } from './uiController.js';
-import {GameController} from "./gameController.js";
+import { BattleGame } from './battleGame.js';
 
 export function getRandomNumberBetween(min, max) {
     return Math.floor(Math.random() * (max - min * 1) + min);
 }
 
+const game = new BattleGame();
+// game.init();
 
 
-function fillTeamsByCharacters(teamLength, personType) {
-    const team = [];
+// const promise1 = new Promise((resolve, reject) => {
+//     const response = fetch('www.image.jpg');
+//
+//     if (response.code === 200) {
+//         resolve(response.body);
+//     } else {
+//         reject('Error', response.code);
+//     }
+// });
+//
+// promise1
+//     .then((response) => {
+//         console.log(response);
+//     });
+//
 
-    for (let i = 0; i < teamLength; i++) {
-        if (personType === 'hero') {
-            team.push(new Hero(getRandomNumberBetween(50,100), getRandomNumberBetween(1,5)));
-        } else {
-            team.push(new Villain(getRandomNumberBetween(50,100), getRandomNumberBetween(1,5)));
-        }
-    }
+const newPromiseSolution = async () => {
+    const response = await fetch('https://rickandmortyapi.com/api/character');
 
-    return team;
+    console.log(response.body);
+
 }
 
-function gameInit() {
-    const gameController = new GameController();
-    const uiController = new UiController('.ui__wrapper', gameController);
-    const startBattleButton = document.querySelector('#start-battle');
-    startBattleButton.addEventListener('click', () => {
-        gameController.startBattle(uiController.refreshTeams)
+console.log('Start')
+newPromiseSolution();
+console.log('End');
 
-    });
-
-    console.log("Team Hero", gameController.heroTeam);
-    console.log("Team villain", gameController.villainTeam);
-}
-
-gameInit();
-
-
+// console.log(promise1);
+// expected output: [object
 
 
 

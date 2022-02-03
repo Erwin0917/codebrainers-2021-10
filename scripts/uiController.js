@@ -164,6 +164,7 @@ export class UiController {
             if (hero instanceof Hero) {
                 this.addCharacterToWorld(hero.name, hero.weapon, hero.strength, hero.hitPoints, "teamHero");
             }
+
         teamVillain.forEach( villain => {
             if (villain instanceof Villain) {
                 this.addCharacterToWorld(villain.name, villain.weapon, villain.strength, villain.hitPoints, 'teamVillain');

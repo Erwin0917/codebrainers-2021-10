@@ -1,4 +1,4 @@
-import {Hero, Person, Villain} from "./person.js";
+import {Hero, Person} from "./person.js";
 import {getRandomNumberBetween} from "./main.js";
 
 function isTeamAlive(team) {
