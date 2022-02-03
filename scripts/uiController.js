@@ -64,6 +64,9 @@ export class UiController {
         // this.hitpointsInput.value = bla bla bla
         //this.nameInput.value = bla bla bla ale mozna też inaczej
         this.randomCharacterButton.addEventListener('click', this.fillAllInputs);
+        this.addCharacterButton.addEventListener('click', this.readInputs);
+
+
     };
 
    fillHitpointsInput = (newHpValue) => {
