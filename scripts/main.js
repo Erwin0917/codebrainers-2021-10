@@ -53,7 +53,7 @@ function duel(attacker,defender, attackerTeam, defenderTeam,attackerIndex, defen
 }
 
 function gameInit() {
-    const uiController = new UiController("ui__wrapper");
+    const uiController = new UiController('ui__wrapper');
 
 
     const heroTeam = fillTeamsByCharacters(3, 'hero');

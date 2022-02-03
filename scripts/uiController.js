@@ -1,8 +1,8 @@
+
 export class UiController {
     constructor(uiWrapperHtmlClass) {
         this.uiWrapper = document.querySelector(uiWrapperHtmlClass);
-
-        // this.nameInput = this.uiWrapper.querySelector('#name');
+        this.nameInput = this.uiWrapper.querySelector('#name');
         this.nameRandomButton = this.uiWrapper.querySelector('#random-name');
         this.weaponInput = this.uiWrapper.querySelector('#weapon');
         this.weaponRandomButton = this.uiWrapper.querySelector('#random-weapon');
@@ -14,11 +14,12 @@ export class UiController {
         this.randomCharacterButton = this.uiWrapper.querySelector('#random-character');
 
 
-        this.addEventListeners()
+        this.initAllEventListeners();
 
     }
+
 //metoda dodająca listenery aby w constructorze nie było syfu
-    addEventListeners = () => {
+    initAllEventListeners = () => {
         //Sekcja z inputem////////////////////////////////////////////////////////////////////////
         this.nameInput.addEventListener('change', () => {
             console.log('Name input was change');
@@ -67,7 +68,6 @@ export class UiController {
 
    fillHitpointsInput = (newHpValue) => {
        this.hitpointsInput.value = newHpValue;
-
    }
 
    fillStrengthInput = (newStregthValue) => {
@@ -76,15 +76,14 @@ export class UiController {
 
    fillWeaponInput = (newWeaponValue) => {
        this.weaponInput.value = newWeaponValue;
-
    }
 
    fillNameInput = (newNameValue) => {
        this.nameInput.value = newNameValue;
-
    }
 
    fillAllInputs = () => {
+
        this.fillHitpointsInput(getRandomNumberBetween(50,100));
        this.fillStrengthInput(getRandomNumberBetween(1,10));
        this.fillWeaponInput(charWeapon[getRandomNumberBetween(0,24)]);
@@ -120,3 +119,7 @@ const charWeapon = ['Brooks',
     'Paula', 'Phillips',
     'Annie', 'Hernandez',
     'Dorothy', 'Murphy'];
+
+function getRandomNumberBetween(min, max) {
+    return Math.floor(Math.random() * (max - min * 1) + min);
+}
