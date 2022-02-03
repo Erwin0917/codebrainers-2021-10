@@ -17,7 +17,7 @@ export class GameController {
         this.villainTeam = [];
     }
 
-    startBattle() {
+    startBattle = () => {
         while (isTeamAlive(this.heroTeam) && isTeamAlive(this.villainTeam)) {
             const attackerTeam = Math.random() < 0.5 ? this.heroTeam : this.villainTeam;
             const defenderTeam = attackerTeam.find(person => person instanceof Hero) !== undefined ? this.villainTeam : this.heroTeam;
@@ -25,7 +25,10 @@ export class GameController {
             const defenderIndex = getRandomNumberBetween(0, defenderTeam.length - 1);
 
             this.duel(attackerTeam[attackerIndex], defenderTeam[defenderIndex], attackerTeam, defenderTeam, attackerIndex, defenderIndex);
+
         }
+
+        console.log('END', this.heroTeam, this.villainTeam);
     }
 
     duel(attacker, defender, attackerTeam, defenderTeam, attackerIndex, defenderIndex) {
@@ -51,31 +54,4 @@ export class GameController {
 
     }
 
-    addCharacterToTeam = (characterName, characterWeapon, characterStrength, characterHp, characterTeam) => {
-        const character = characterTeam === "teamHero" ? new Hero() : new Villain();
-        character.name = characterName;
-        character.hitPoints = characterHp;
-        character.strength = characterStrength;
-        character.weapon = characterWeapon;
-        characterTeam === "teamHero" ? this.heroTeam.push(character) : this.villainTeam.push(character);
-        console.log("Hero Team:", this.heroTeam);
-        console.log("Villain Team:", this.villainTeam);
-    };
-
-    addCharacterToWorld = (characterName, characterWeapon, characterStrength, characterHp, characterTeam) => {
-        const characterWrapper = document.createElement("div");
-        characterWrapper.classList.add("character", "nes-container");
-        characterWrapper.innerHTML = `    
-            <h2 className="name" id="char-name">${characterName}</h2>
-            <button type="button" className="delete-char" id="delete-char">X</button>
-            <div className="avatar__wrapper">
-                <img className="avatar" src="https://rickandmortyapi.com/api/character/avatar/87.jpeg" alt="hero-avatar">
-            </div>
-            <div className="details__wrapper">
-                <p>Weapon: <span className="nes-text is-warning">${characterWeapon}</span></p>
-                <p>Strength: <span className="nes-text is-success">${characterStrength}</span></p>
-                <p>HitPoints: <span className="nes-text is-error">${characterHp}</span></p>
-            </div>
-            <progress className="nes-progress is-error" value="${characterHp}" max="${characterHp}"></progress>`;
-    };
 };

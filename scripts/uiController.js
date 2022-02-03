@@ -1,22 +1,25 @@
 import {getRandomNumberBetween} from "./main.js";
+import { Hero, Villain } from './person.js';
 
 
 export class UiController {
-    constructor(uiWrapperHtmlClass, addCharacterCallback) {
+    constructor(uiWrapperHtmlClass, gameController) {
         this.uiWrapper = document.querySelector(uiWrapperHtmlClass);
-        this.addCharacterCallback = addCharacterCallback;
+        this.gameController = gameController;
+
         this.nameInput = this.uiWrapper.querySelector('#name');
-        this.nameRandomButton = this.uiWrapper.querySelector('#random-name');
         this.weaponInput = this.uiWrapper.querySelector('#weapon');
-        this.weaponRandomButton = this.uiWrapper.querySelector('#random-weapon');
         this.strengthInput = this.uiWrapper.querySelector('#strength');
-        this.strengthRandomButton = this.uiWrapper.querySelector('#random-strength');
         this.hpInput = this.uiWrapper.querySelector('#hitpoints');
+        this.selectTeamInput = this.uiWrapper.querySelector('#default_select');
+
+        this.nameRandomButton = this.uiWrapper.querySelector('#random-name');
+        this.weaponRandomButton = this.uiWrapper.querySelector('#random-weapon');
+        this.strengthRandomButton = this.uiWrapper.querySelector('#random-strength');
         this.hpRandomButton = this.uiWrapper.querySelector('#random-hitpoints');
         this.randomCharacterButton = this.uiWrapper.querySelector('#random-character');
-        this.selectTeamInput = this.uiWrapper.querySelector('#default_select');
         this.addCharacterButton = this.uiWrapper.querySelector('#add-character');
-
+        this.startGame = this.uiWrapper.querySelector('#start-battle');
 
         this.initAllEventListeners();
     }
@@ -59,8 +62,8 @@ export class UiController {
         });
 
         this.addCharacterButton.addEventListener('click', this.readInputs);
-
         this.randomCharacterButton.addEventListener('click', this.fillAllInputs);
+        this.startGame.addEventListener('click', this.gameController.startBattle);
     };
 
     fillHpInput = (newHpValue) => {
@@ -108,11 +111,51 @@ export class UiController {
         const characterHp = this.hpInput.value.trim();
         const characterTeam = this.selectTeamInput.value;
         if(characterName !== '' || characterWeapon !== '' || characterStrength !== '' || characterHp !== '' || characterTeam !== ''){
-            this.addCharacterCallback(characterName, characterWeapon, characterStrength, characterHp, characterTeam);
+            this.addCharacterToTeam(characterName, characterWeapon, characterStrength, characterHp, characterTeam);
             return;
         }
         console.log('Wrong input value');
     }
+
+    addCharacterToTeam = (characterName, characterWeapon, characterStrength, characterHp, characterTeam) => {
+        const character = characterTeam === "teamHero" ? new Hero() : new Villain();
+        character.name = characterName;
+        character.hitPoints = characterHp;
+        character.strength = characterStrength;
+        character.weapon = characterWeapon;
+        characterTeam === "teamHero" ? this.gameController.heroTeam.push(character) : this.gameController.villainTeam.push(character);
+
+        this.addCharacterToWorld(characterName, characterWeapon, characterStrength, characterHp, characterTeam)
+
+        this.fillAllInputs();
+
+        console.log("Hero Team:", this.gameController.heroTeam);
+        console.log("Villain Team:", this.gameController.villainTeam);
+    };
+
+    addCharacterToWorld = (characterName, characterWeapon, characterStrength, characterHp, characterTeam) => {
+        const teamWrapperId = characterTeam === "teamHero" ? "#hero-team" : "#villain-team";
+        const teamWrapper = document.querySelector(teamWrapperId)
+
+        const characterWrapper = document.createElement("div");
+
+        characterWrapper.classList.add("character", "nes-container");
+        characterWrapper.innerHTML = `    
+            <h2 class="name" id="char-name">${characterName}</h2>
+            <button type="button" class="delete-char" id="delete-char">X</button>
+            <div class="avatar__wrapper">
+                <img class="avatar" src="https://rickandmortyapi.com/api/character/avatar/87.jpeg" alt="hero-avatar">
+            </div>
+            <div class="details__wrapper">
+                <p>Weapon: <span class="nes-text is-warning">${characterWeapon}</span></p>
+                <p>Strength: <span class="nes-text is-success">${characterStrength}</span></p>
+                <p>HitPoints: <span class="nes-text is-error">${characterHp}</span></p>
+            </div>
+            <progress class="nes-progress is-error" value="${characterHp}" max="${characterHp}"></progress>
+        `;
+
+        teamWrapper.appendChild(characterWrapper);
+    };
 
 
 }
@@ -144,20 +187,3 @@ const charWeapon = ['Brooks',
     'Paula', 'Phillips',
     'Annie', 'Hernandez',
     'Dorothy', 'Murphy'];
-
-
-// <div className="character nes-container">
-//     <h2 className="name" id="char-name">Cynthia</h2>
-//     <button type="button" className="delete-char" id="delete-char">X</button>
-//     <div className="avatar__wrapper">
-//         <img className="avatar" src="https://rickandmortyapi.com/api/character/avatar/87.jpeg" alt="hero-avatar">
-//     </div>
-//     <div className="details__wrapper">
-//
-//         <p>Weapon: <span className="nes-text is-warning">Heartsnatcher</span></p>
-//         <p>Strength: <span className="nes-text is-success">54</span></p>
-//         <p>HitPoints: <span className="nes-text is-error">124</span></p>
-//
-//     </div>
-//     <progress className="nes-progress is-error" value="124" max="124"></progress>
-// </div>

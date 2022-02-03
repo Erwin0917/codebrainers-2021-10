@@ -24,7 +24,7 @@ function fillTeamsByCharacters(teamLength, personType) {
 
 function gameInit() {
     const gameController = new GameController();
-    const uiController = new UiController('.ui__wrapper', gameController.addCharacterToTeam);
+    const uiController = new UiController('.ui__wrapper', gameController);
 
     console.log("Team Hero", gameController.heroTeam);
     console.log("Team villain", gameController.villainTeam);
