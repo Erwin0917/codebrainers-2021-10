@@ -15,5 +15,8 @@ export class BattleGame {
 
         console.log('Team Hero', this.gameController.heroTeam);
         console.log('Team villain', this.gameController.villainTeam);
+
+        document.querySelector('#villainWins').innerHTML = localStorage.getItem('winnerVillain');
+        document.querySelector('#heroWins').innerHTML = localStorage.getItem('winnerHero');
     }
 }

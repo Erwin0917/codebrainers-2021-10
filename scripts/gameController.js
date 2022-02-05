@@ -11,6 +11,16 @@ function isTeamAlive(team) {
     return teamIsAlive;
 }
 
+function readLocalStorage(teamKey) {
+    const teamItem= localStorage.getItem(teamKey);
+    if(teamItem !== null){
+        localStorage.setItem(teamKey, parseInt(teamItem)+1);
+    }else {
+        localStorage.setItem(teamKey, 1);
+    }
+}
+
+
 export class GameController {
     constructor() {
         this.heroTeam = [];
@@ -27,8 +37,15 @@ export class GameController {
             this.duel(attackerTeam[attackerIndex], defenderTeam[defenderIndex], attackerTeam, defenderTeam, attackerIndex, defenderIndex);
             refreshCallback(this.heroTeam, this.villainTeam);
 
-            await timeout(1000);
+            await timeout(100);
         }
+
+        const teamKey = this.heroTeam.length < 1 ? 'winnerVillain' : 'winnerHero';
+
+        readLocalStorage(teamKey);
+
+        document.querySelector('#villainWins').innerHTML = localStorage.getItem('winnerVillain');
+        document.querySelector('#heroWins').innerHTML = localStorage.getItem('winnerHero');
 
         console.log('END', this.heroTeam, this.villainTeam);
     }
