@@ -1,4 +1,4 @@
-import {getRandomNumberBetween} from "./main.js";
+import { getRandomNumberBetween } from './main.js';
 import { Hero, Villain } from './person.js';
 
 
@@ -64,7 +64,7 @@ export class UiController {
         });
 
         this.addCharacterButton.addEventListener('click', this.readInputs);
-        this.randomCharacterButton.addEventListener('click', async() => {
+        this.randomCharacterButton.addEventListener('click', async () => {
             await this.loadCharacterInputs();
             this.fillAllInputs();
         });
@@ -73,22 +73,22 @@ export class UiController {
     };
 
     fillHpInput = (newHpValue) => {
-        if(typeof newHpValue !== 'number' ) return;
+        if (typeof newHpValue !== 'number') return;
         this.hpInput.value = newHpValue;
     };
 
     fillStrengthInput = (newStrengthValue) => {
-        if(typeof newStrengthValue !== 'number' ) return;
+        if (typeof newStrengthValue !== 'number') return;
         this.strengthInput.value = newStrengthValue;
     };
 
     fillWeaponInput = (newWeaponInput) => {
-        if(typeof newWeaponInput !== 'string' ) return;
+        if (typeof newWeaponInput !== 'string') return;
         this.weaponInput.value = newWeaponInput;
     };
 
     fillNameInput = (newNameInput) => {
-        if(typeof newNameInput !== 'string' ) return;
+        if (typeof newNameInput !== 'string') return;
         this.nameInput.value = newNameInput;
     };
 
@@ -101,18 +101,18 @@ export class UiController {
         }
 
     };
-    loadCharacterInputs = async() => {
+    loadCharacterInputs = async () => {
         let characterIndex;
-        do{
+        do {
             characterIndex = getRandomNumberBetween(1, 827);
 
-        }while(this.characterIds.includes(characterIndex));
+        } while (this.characterIds.includes(characterIndex));
         console.log(characterIndex);
         console.log(this.characterIds);
         const response = await fetch(`https://rickandmortyapi.com/api/character/${characterIndex}`);
 
         if (response.status === 200) {
-            console.log("Status 200! Success.");
+            console.log('Status 200! Success.');
             const data = await response.json();
             console.log(data);
             this.personTemporaryData = {
@@ -123,87 +123,85 @@ export class UiController {
             };
 
         } else {
-            console.log("Status is not 200! Fail.");
+            console.log('Status is not 200! Fail.');
         }
     };
 
-    fillAllInputs = () =>{
+    fillAllInputs = () => {
         this.fillHpInput(getRandomNumberBetween(50, 100));
         this.fillStrengthInput(getRandomNumberBetween(1, 10));
         this.fillWeaponInput(charWeapon[getRandomNumberBetween(0, 24)]);
         if (this.personTemporaryData !== null) {
             this.fillNameInput(this.personTemporaryData.name);
         }
-        this.randomTeam()
+        this.randomTeam();
     };
 
-    readInputs = () =>{
+    readInputs = () => {
 
         const characterName = this.nameInput.value.trim();
         const characterWeapon = this.weaponInput.value.trim();
         const characterStrength = this.strengthInput.value.trim();
         const characterHp = this.hpInput.value.trim();
         const characterTeam = this.selectTeamInput.value;
-        if(characterName !== '' || characterWeapon !== '' || characterStrength !== '' || characterHp !== '' || characterTeam !== ''){
+        if (characterName !== '' || characterWeapon !== '' || characterStrength !== '' || characterHp !== '' || characterTeam !== '') {
             this.addCharacterToTeam(characterName, characterWeapon, characterStrength, characterHp, characterTeam);
             return;
         }
         console.log('Wrong input value');
-    }
+    };
 
     addCharacterToTeam = (characterName, characterWeapon, characterStrength, characterHp, characterTeam) => {
-        const character = characterTeam === "teamHero" ? new Hero() : new Villain();
+        const character = characterTeam === 'teamHero' ? new Hero() : new Villain();
         character.name = characterName;
         character.hitPoints = characterHp;
         character.strength = characterStrength;
         character.weapon = characterWeapon;
-        characterTeam === "teamHero" ? this.gameController.heroTeam.push(character) : this.gameController.villainTeam.push(character);
+        characterTeam === 'teamHero' ? this.gameController.heroTeam.push(character) : this.gameController.villainTeam.push(character);
 
         this.characterIds.push(this.personTemporaryData.id);
+
         character.htmlWrapper = this.addCharacterToWorld(character, characterTeam);
 
-        const deleteButton = character.htmlWrapper.querySelector("#delete-char");
-        deleteButton.addEventListener('click', () => {
-
-            if(characterTeam === "teamHero") {
-                this.gameController.heroTeam = this.gameController.heroTeam.filter((hero) => {
-
-                    return hero.id !== character.id;
-                })
-            }else{
-                this.gameController.villainTeam = this.gameController.villainTeam.filter((villain) => {
-
-                    return villain.id !== character.id;
-                })
-            }
-
-        });
+        const deleteButton = character.htmlWrapper.querySelector('#delete-char');
+        deleteButton.addEventListener('click', () => this.removeCharacterFromTeam(character, characterTeam));
 
         this.fillAllInputs();
+    };
 
-        console.log("Hero Team:", this.gameController.heroTeam);
-        console.log("Villain Team:", this.gameController.villainTeam);
+    removeCharacterFromTeam = (character, team) => {
+        if (team === 'teamHero') {
+            this.gameController.heroTeam = this.gameController.heroTeam.filter((hero) => {
+                return hero.id !== character.id;
+            });
+        } else {
+            this.gameController.villainTeam = this.gameController.villainTeam.filter((villain) => {
+                return villain.id !== character.id;
+            });
+        }
+
+        this.refreshTeams(this.gameController.heroTeam, this.gameController.villainTeam);
     };
 
     addCharacterToWorld = (character, characterTeam) => {
-        const teamWrapperId = characterTeam === "teamHero" ? "#hero-team" : "#villain-team";
-        const teamWrapper = document.querySelector(teamWrapperId)
+        const teamWrapperId = characterTeam === 'teamHero' ? '#hero-team' : '#villain-team';
+        const teamWrapper = document.querySelector(teamWrapperId);
 
-        const characterWrapper = document.createElement("div");
+        const characterWrapper = document.createElement('div');
 
-        characterWrapper.classList.add("character", "nes-container");
+        characterWrapper.classList.add('character', 'nes-container');
         characterWrapper.innerHTML = `    
-            <h2 class="name" id="char-name">${character.name}</h2>
-            <button type="button" class="delete-char" id="delete-char">X</button>
-            <div class="avatar__wrapper">
-                <img class="avatar" src="${this.personTemporaryData !== null ? this.personTemporaryData.image : "https://rickandmortyapi.com/api/character/avatar/87.jpeg" }" alt="hero-avatar">
+            <h2 class='name' id='char-name'>${character.name}</h2>
+            <button type='button' class='delete-char' id='delete-char'>X</button>
+            <div class='avatar__wrapper'>
+                <img class='avatar' src='${this.personTemporaryData !== null ? this.personTemporaryData.image : 'https://rickandmortyapi.com/api/character/avatar/87.jpeg'}' alt='hero-avatar'>
             </div>
-            <div class="details__wrapper">
-                <p>Weapon: <span class="nes-text is-warning">${character.weapon}</span></p>
-                <p>Strength: <span class="nes-text is-success">${character.strength}</span></p>
-                <p>HitPoints: <span class="nes-text is-error">${character.hitPoints}</span></p>
+            <div class='details__wrapper'>
+                <p>Weapon: <span class='nes-text is-warning'>${character.weapon}</span></p>
+                <p>Strength: <span class='nes-text is-success'>${character.strength}</span></p>
+                <p>HitPoints: <span class='nes-text is-error'>${character.hitPoints}</span></p>
             </div>
-            <progress class="nes-progress is-error" value="${character.hitPoints}" max="${character.hitPoints}"></progress>
+            <progress class='nes-progress is-error' value='${character.hitPoints}' max='${character.hitPoints}'></progress>
         `;
 
         teamWrapper.appendChild(characterWrapper);
@@ -211,21 +209,21 @@ export class UiController {
     };
 
     refreshTeams = (teamHero, teamVillain) => {
-        document.querySelector("#hero-team").innerHTML ='' ;
-        document.querySelector("#villain-team").innerHTML= '';
-        teamHero.forEach(  hero => {
+        document.querySelector('#hero-team').innerHTML = '';
+        document.querySelector('#villain-team').innerHTML = '';
+        teamHero.forEach(hero => {
             if (hero instanceof Hero) {
-                this.addCharacterToWorld(hero.name, hero.weapon, hero.strength, hero.hitPoints, "teamHero");
+                this.addCharacterToWorld(hero.name, hero.weapon, hero.strength, hero.hitPoints, 'teamHero');
             }
 
-        teamVillain.forEach( villain => {
-            if (villain instanceof Villain) {
-                this.addCharacterToWorld(villain.name, villain.weapon, villain.strength, villain.hitPoints, 'teamVillain');
-            }
-        })
+            teamVillain.forEach(villain => {
+                if (villain instanceof Villain) {
+                    this.addCharacterToWorld(villain.name, villain.weapon, villain.strength, villain.hitPoints, 'teamVillain');
+                }
+            });
 
-        } )
-    }
+        });
+    };
 }
 
 const charName = ['Harry', 'Ross',
