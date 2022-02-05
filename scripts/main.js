@@ -5,7 +5,8 @@ export function getRandomNumberBetween(min, max) {
 }
 
 const game = new BattleGame();
-// game.init();
+game.init();
+// game.init(); - odpalenie gry
 
 
 // const promise1 = new Promise((resolve, reject) => {
@@ -23,21 +24,3 @@ const game = new BattleGame();
 //         console.log(response);
 //     });
 //
-
-const newPromiseSolution = async () => {
-    const response = await fetch('https://rickandmortyapi.com/api/character');
-
-    console.log(response.body);
-
-}
-
-console.log('Start')
-newPromiseSolution();
-console.log('End');
-
-// console.log(promise1);
-// expected output: [object
-
-
-
-

@@ -6,6 +6,7 @@ export class UiController {
     constructor(uiWrapperHtmlClass, gameController) {
         this.uiWrapper = document.querySelector(uiWrapperHtmlClass);
         this.gameController = gameController;
+        this.personTemporaryData = null;
 
         this.nameInput = this.uiWrapper.querySelector('#name');
         this.weaponInput = this.uiWrapper.querySelector('#weapon');
@@ -62,7 +63,11 @@ export class UiController {
         });
 
         this.addCharacterButton.addEventListener('click', this.readInputs);
-        this.randomCharacterButton.addEventListener('click', this.fillAllInputs);
+        this.randomCharacterButton.addEventListener('click', async() => {
+            await this.loadCharacterInputs();
+            this.fillAllInputs();
+        });
+
         // this.startGame.addEventListener('click', this.gameController.startBattle);
     };
 
@@ -95,16 +100,34 @@ export class UiController {
         }
 
     };
+    loadCharacterInputs = async() => {
+        const response = await fetch('https://rickandmortyapi.com/api/character/2');
+
+        if (response.status === 200) {
+            console.log("Status 200! Success.");
+            const data = await response.json();
+            console.log(data);
+            this.personTemporaryData = {
+                name: data.name,
+                image: data.image
+            };
+        } else {
+            console.log("Status is not 200! Fail.");
+        };
+    };
 
     fillAllInputs = () =>{
         this.fillHpInput(getRandomNumberBetween(50, 100));
         this.fillStrengthInput(getRandomNumberBetween(1, 10));
         this.fillWeaponInput(charWeapon[getRandomNumberBetween(0, 24)]);
-        this.fillNameInput(charName[getRandomNumberBetween(0, 24)]);
+        if (this.personTemporaryData.name !== null) {
+            this.fillNameInput(this.personTemporaryData.name);
+        };
         this.randomTeam()
     };
 
     readInputs = () =>{
+
         const characterName = this.nameInput.value.trim();
         const characterWeapon = this.weaponInput.value.trim();
         const characterStrength = this.strengthInput.value.trim();

@@ -24,6 +24,7 @@ export  class Person {
 }
 
 
+
 export class Hero extends Person {
     constructor(hitPoints, strength) {
         super(hitPoints);
