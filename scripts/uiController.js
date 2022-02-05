@@ -157,6 +157,7 @@ export class UiController {
         character.hitPoints = characterHp;
         character.strength = characterStrength;
         character.weapon = characterWeapon;
+        character.picture = this.personTemporaryData.image;
         characterTeam === 'teamHero' ? this.gameController.heroTeam.push(character) : this.gameController.villainTeam.push(character);
 
         this.characterIds.push(this.personTemporaryData.id);
@@ -181,9 +182,11 @@ export class UiController {
         }
 
         this.refreshTeams(this.gameController.heroTeam, this.gameController.villainTeam);
+
     };
 
     addCharacterToWorld = (character, characterTeam) => {
+        console.log(character)
         const teamWrapperId = characterTeam === 'teamHero' ? '#hero-team' : '#villain-team';
         const teamWrapper = document.querySelector(teamWrapperId);
 
@@ -194,7 +197,7 @@ export class UiController {
             <h2 class='name' id='char-name'>${character.name}</h2>
             <button type='button' class='delete-char' id='delete-char'>X</button>
             <div class='avatar__wrapper'>
-                <img class='avatar' src='${this.personTemporaryData !== null ? this.personTemporaryData.image : 'https://rickandmortyapi.com/api/character/avatar/87.jpeg'}' alt='hero-avatar'>
+                <img class='avatar' src='${character.picture !== null ? character.picture : 'https://rickandmortyapi.com/api/character/avatar/87.jpeg'}' alt='hero-avatar'>
             </div>
             <div class='details__wrapper'>
                 <p>Weapon: <span class='nes-text is-warning'>${character.weapon}</span></p>
@@ -207,21 +210,27 @@ export class UiController {
         teamWrapper.appendChild(characterWrapper);
         return characterWrapper;
     };
+    // character.htmlWrapper = this.addCharacterToWorld(character, characterTeam);
+    //
+    // const deleteButton = character.htmlWrapper.querySelector('#delete-char');
+    // deleteButton.addEventListener('click', () => this.removeCharacterFromTeam(character, characterTeam));
 
     refreshTeams = (teamHero, teamVillain) => {
         document.querySelector('#hero-team').innerHTML = '';
         document.querySelector('#villain-team').innerHTML = '';
         teamHero.forEach(hero => {
             if (hero instanceof Hero) {
-                this.addCharacterToWorld(hero.name, hero.weapon, hero.strength, hero.hitPoints, 'teamHero');
+                hero.htmlWrapper = this.addCharacterToWorld(hero,'teamHero');
+                const deleteButton = hero.htmlWrapper.querySelector('#delete-char')
+                deleteButton.addEventListener('click', () => this.removeCharacterFromTeam(hero, 'teamHero'))
             }
-
-            teamVillain.forEach(villain => {
-                if (villain instanceof Villain) {
-                    this.addCharacterToWorld(villain.name, villain.weapon, villain.strength, villain.hitPoints, 'teamVillain');
-                }
-            });
-
+        });
+        teamVillain.forEach(villain => {
+            if (villain instanceof Villain) {
+                villain.htmlWrapper = this.addCharacterToWorld(villain,'teamVillain');
+                const deleteButton = villain.htmlWrapper.querySelector('#delete-char')
+                deleteButton.addEventListener('click', () => this.removeCharacterFromTeam(villain, 'teamVillain'))
+            }
         });
     };
 }
