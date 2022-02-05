@@ -7,6 +7,7 @@ export class UiController {
         this.uiWrapper = document.querySelector(uiWrapperHtmlClass);
         this.gameController = gameController;
         this.personTemporaryData = null;
+        this.characterIds = [];
 
         this.nameInput = this.uiWrapper.querySelector('#name');
         this.weaponInput = this.uiWrapper.querySelector('#weapon');
@@ -101,7 +102,14 @@ export class UiController {
 
     };
     loadCharacterInputs = async() => {
-        const response = await fetch('https://rickandmortyapi.com/api/character/2');
+        let characterIndex;
+        do{
+            characterIndex = getRandomNumberBetween(1, 827);
+
+        }while(this.characterIds.includes(characterIndex));
+        console.log(characterIndex);
+        console.log(this.characterIds);
+        const response = await fetch(`https://rickandmortyapi.com/api/character/${characterIndex}`);
 
         if (response.status === 200) {
             console.log("Status 200! Success.");
@@ -109,20 +117,23 @@ export class UiController {
             console.log(data);
             this.personTemporaryData = {
                 name: data.name,
-                image: data.image
+                image: data.image,
+                id: data.id
+
             };
+
         } else {
             console.log("Status is not 200! Fail.");
-        };
+        }
     };
 
     fillAllInputs = () =>{
         this.fillHpInput(getRandomNumberBetween(50, 100));
         this.fillStrengthInput(getRandomNumberBetween(1, 10));
         this.fillWeaponInput(charWeapon[getRandomNumberBetween(0, 24)]);
-        if (this.personTemporaryData.name !== null) {
+        if (this.personTemporaryData !== null) {
             this.fillNameInput(this.personTemporaryData.name);
-        };
+        }
         this.randomTeam()
     };
 
@@ -148,7 +159,25 @@ export class UiController {
         character.weapon = characterWeapon;
         characterTeam === "teamHero" ? this.gameController.heroTeam.push(character) : this.gameController.villainTeam.push(character);
 
-        this.addCharacterToWorld(characterName, characterWeapon, characterStrength, characterHp, characterTeam)
+        this.characterIds.push(this.personTemporaryData.id);
+        character.htmlWrapper = this.addCharacterToWorld(character, characterTeam);
+
+        const deleteButton = character.htmlWrapper.querySelector("#delete-char");
+        deleteButton.addEventListener('click', () => {
+
+            if(characterTeam === "teamHero") {
+                this.gameController.heroTeam = this.gameController.heroTeam.filter((hero) => {
+
+                    return hero.id !== character.id;
+                })
+            }else{
+                this.gameController.villainTeam = this.gameController.villainTeam.filter((villain) => {
+
+                    return villain.id !== character.id;
+                })
+            }
+
+        });
 
         this.fillAllInputs();
 
@@ -156,7 +185,7 @@ export class UiController {
         console.log("Villain Team:", this.gameController.villainTeam);
     };
 
-    addCharacterToWorld = (characterName, characterWeapon, characterStrength, characterHp, characterTeam) => {
+    addCharacterToWorld = (character, characterTeam) => {
         const teamWrapperId = characterTeam === "teamHero" ? "#hero-team" : "#villain-team";
         const teamWrapper = document.querySelector(teamWrapperId)
 
@@ -164,20 +193,21 @@ export class UiController {
 
         characterWrapper.classList.add("character", "nes-container");
         characterWrapper.innerHTML = `    
-            <h2 class="name" id="char-name">${characterName}</h2>
+            <h2 class="name" id="char-name">${character.name}</h2>
             <button type="button" class="delete-char" id="delete-char">X</button>
             <div class="avatar__wrapper">
-                <img class="avatar" src="https://rickandmortyapi.com/api/character/avatar/87.jpeg" alt="hero-avatar">
+                <img class="avatar" src="${this.personTemporaryData !== null ? this.personTemporaryData.image : "https://rickandmortyapi.com/api/character/avatar/87.jpeg" }" alt="hero-avatar">
             </div>
             <div class="details__wrapper">
-                <p>Weapon: <span class="nes-text is-warning">${characterWeapon}</span></p>
-                <p>Strength: <span class="nes-text is-success">${characterStrength}</span></p>
-                <p>HitPoints: <span class="nes-text is-error">${characterHp}</span></p>
+                <p>Weapon: <span class="nes-text is-warning">${character.weapon}</span></p>
+                <p>Strength: <span class="nes-text is-success">${character.strength}</span></p>
+                <p>HitPoints: <span class="nes-text is-error">${character.hitPoints}</span></p>
             </div>
-            <progress class="nes-progress is-error" value="${characterHp}" max="${characterHp}"></progress>
+            <progress class="nes-progress is-error" value="${character.hitPoints}" max="${character.hitPoints}"></progress>
         `;
 
         teamWrapper.appendChild(characterWrapper);
+        return characterWrapper;
     };
 
     refreshTeams = (teamHero, teamVillain) => {

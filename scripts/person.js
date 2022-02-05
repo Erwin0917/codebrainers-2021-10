@@ -1,8 +1,11 @@
 export  class Person {
     constructor(hitPoints = 0, strength = 0) {
+        this.id = `_` + Math.random().toString(36).substr(2, 9);
         this.name = '';
         this.hitPoints = hitPoints;
         this.strength= strength;
+        this.htmlWrapper = null;
+
     }
 
     isAlive() {
