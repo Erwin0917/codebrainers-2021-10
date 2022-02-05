@@ -21,23 +21,14 @@ export class UiController {
         this.hpRandomButton = this.uiWrapper.querySelector('#random-hitpoints');
         this.randomCharacterButton = this.uiWrapper.querySelector('#random-character');
         this.addCharacterButton = this.uiWrapper.querySelector('#add-character');
-        this.startGame = this.uiWrapper.querySelector('#start-battle');
 
         this.initAllEventListeners();
     }
 
     initAllEventListeners = () => {
-        this.nameInput.addEventListener('change', () => {
-            console.log('Name input was change');
-        });
-
         this.nameRandomButton.addEventListener('click', () => {
             this.fillNameInput(charName[getRandomNumberBetween(0, 24)]);
             console.log('Random Name button click');
-        });
-
-        this.weaponInput.addEventListener('change', () => {
-            console.log('Weapon input was change');
         });
 
         this.weaponRandomButton.addEventListener('click', () => {
@@ -45,17 +36,9 @@ export class UiController {
             console.log('Random weapon button click');
         });
 
-        this.strengthInput.addEventListener('change', () => {
-            console.log('strength input was change');
-        });
-
         this.strengthRandomButton.addEventListener('click', () => {
             this.fillStrengthInput(getRandomNumberBetween(1, 10));
             console.log('Strength Name button click');
-        });
-
-        this.hpInput.addEventListener('change', () => {
-            console.log('Hp input was change');
         });
 
         this.hpRandomButton.addEventListener('click', () => {
@@ -63,13 +46,15 @@ export class UiController {
             console.log('Random hp button click');
         });
 
-        this.addCharacterButton.addEventListener('click', this.readInputs);
+        this.addCharacterButton.addEventListener('click', async () => {
+            this.readInputs();
+            await this.loadCharacterInputs();
+            this.fillAllInputs();
+        });
         this.randomCharacterButton.addEventListener('click', async () => {
             await this.loadCharacterInputs();
             this.fillAllInputs();
         });
-
-        // this.startGame.addEventListener('click', this.gameController.startBattle);
     };
 
     fillHpInput = (newHpValue) => {
@@ -105,21 +90,17 @@ export class UiController {
         let characterIndex;
         do {
             characterIndex = getRandomNumberBetween(1, 827);
-
         } while (this.characterIds.includes(characterIndex));
-        console.log(characterIndex);
-        console.log(this.characterIds);
+
         const response = await fetch(`https://rickandmortyapi.com/api/character/${characterIndex}`);
 
         if (response.status === 200) {
             console.log('Status 200! Success.');
             const data = await response.json();
-            console.log(data);
             this.personTemporaryData = {
                 name: data.name,
                 image: data.image,
                 id: data.id
-
             };
 
         } else {
@@ -127,7 +108,7 @@ export class UiController {
         }
     };
 
-    fillAllInputs = () => {
+    fillAllInputs =  () => {
         this.fillHpInput(getRandomNumberBetween(50, 100));
         this.fillStrengthInput(getRandomNumberBetween(1, 10));
         this.fillWeaponInput(charWeapon[getRandomNumberBetween(0, 24)]);
@@ -138,7 +119,6 @@ export class UiController {
     };
 
     readInputs = () => {
-
         const characterName = this.nameInput.value.trim();
         const characterWeapon = this.weaponInput.value.trim();
         const characterStrength = this.strengthInput.value.trim();
@@ -162,15 +142,11 @@ export class UiController {
 
         this.characterIds.push(this.personTemporaryData.id);
 
-        character.htmlWrapper = this.addCharacterToWorld(character, characterTeam);
-
-        const deleteButton = character.htmlWrapper.querySelector('#delete-char');
-        deleteButton.addEventListener('click', () => this.removeCharacterFromTeam(character, characterTeam));
-
-        this.fillAllInputs();
+        this.addCharacter(character);
     };
 
-    removeCharacterFromTeam = (character, team) => {
+    removeCharacterFromTeam = (character) => {
+        const team = character instanceof Hero ? 'teamHero' : 'teamVillain';
         if (team === 'teamHero') {
             this.gameController.heroTeam = this.gameController.heroTeam.filter((hero) => {
                 return hero.id !== character.id;
@@ -182,14 +158,18 @@ export class UiController {
         }
 
         this.refreshTeams(this.gameController.heroTeam, this.gameController.villainTeam);
-
     };
 
-    addCharacterToWorld = (character, characterTeam) => {
-        console.log(character)
+    addCharacter = (character) => {
+        character.htmlWrapper = this.addCharacterToWorld(character);
+        const deleteButton = character.htmlWrapper.querySelector('#delete-char');
+        deleteButton.addEventListener('click', () => this.removeCharacterFromTeam(character));
+    };
+
+    addCharacterToWorld = (character) => {
+        const characterTeam = character instanceof Hero ? 'teamHero' : 'teamVillain';
         const teamWrapperId = characterTeam === 'teamHero' ? '#hero-team' : '#villain-team';
         const teamWrapper = document.querySelector(teamWrapperId);
-
         const characterWrapper = document.createElement('div');
 
         characterWrapper.classList.add('character', 'nes-container');
@@ -210,27 +190,13 @@ export class UiController {
         teamWrapper.appendChild(characterWrapper);
         return characterWrapper;
     };
-    // character.htmlWrapper = this.addCharacterToWorld(character, characterTeam);
-    //
-    // const deleteButton = character.htmlWrapper.querySelector('#delete-char');
-    // deleteButton.addEventListener('click', () => this.removeCharacterFromTeam(character, characterTeam));
 
     refreshTeams = (teamHero, teamVillain) => {
         document.querySelector('#hero-team').innerHTML = '';
         document.querySelector('#villain-team').innerHTML = '';
-        teamHero.forEach(hero => {
-            if (hero instanceof Hero) {
-                hero.htmlWrapper = this.addCharacterToWorld(hero,'teamHero');
-                const deleteButton = hero.htmlWrapper.querySelector('#delete-char')
-                deleteButton.addEventListener('click', () => this.removeCharacterFromTeam(hero, 'teamHero'))
-            }
-        });
-        teamVillain.forEach(villain => {
-            if (villain instanceof Villain) {
-                villain.htmlWrapper = this.addCharacterToWorld(villain,'teamVillain');
-                const deleteButton = villain.htmlWrapper.querySelector('#delete-char')
-                deleteButton.addEventListener('click', () => this.removeCharacterFromTeam(villain, 'teamVillain'))
-            }
+
+        [...teamHero, ...teamVillain].forEach(character => {
+            this.addCharacter(character);
         });
     };
 }
