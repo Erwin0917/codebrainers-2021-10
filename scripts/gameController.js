@@ -1,5 +1,5 @@
-import {Hero, Person} from "./person.js";
-import {getRandomNumberBetween} from "./main.js";
+import { Hero, Person, Villain } from './person.js';
+import { getRandomNumberBetween } from './main.js';
 
 function isTeamAlive(team) {
     let teamIsAlive = false;
@@ -12,30 +12,23 @@ function isTeamAlive(team) {
 }
 
 function setBattleResultToLocalStorage(teamKey) {
-    const teamItem= localStorage.getItem(teamKey);
-    if(teamItem !== null){
-        localStorage.setItem(teamKey, parseInt(teamItem)+1);
-    }else {
+    const teamItem = localStorage.getItem(teamKey);
+    if (teamItem !== null) {
+        localStorage.setItem(teamKey, parseInt(teamItem) + 1);
+    } else {
         localStorage.setItem(teamKey, 1);
     }
 }
 
-export function addCharacterToLocalStorage(characterTeam, character){
-    // let heroCharacters = [];
+export function addCharacterToLocalStorage(characterTeam, character) {
     const teamItem = localStorage.getItem(characterTeam);
-    if(teamItem === null) {
-        localStorage.setItem(characterTeam, JSON.stringify([(character)]))
+    if (teamItem === null) {
+        localStorage.setItem(characterTeam, JSON.stringify([character]));
     } else {
         const parseItem = JSON.parse(teamItem);
-        console.log(parseItem);
         parseItem.push(character);
-        localStorage.setItem(characterTeam, JSON.stringify(parseItem))
+        localStorage.setItem(characterTeam, JSON.stringify(parseItem));
     }
-
-
-    // if(characterTeam === 'teamHero') {
-    //     localStorage.setItem(characterTeam, )
-    // }
 }
 
 
@@ -66,11 +59,11 @@ export class GameController {
         document.querySelector('#heroWins').innerHTML = localStorage.getItem('winnerHero');
 
         console.log('END', this.heroTeam, this.villainTeam);
-    }
+    };
 
     duel(attacker, defender, attackerTeam, defenderTeam, attackerIndex, defenderIndex) {
         if (!(attacker instanceof Person) || !(defender instanceof Person)) {
-            console.log("Attacker or defender are not instance of Person Class");
+            console.log('Attacker or defender are not instance of Person Class');
             return;
         }
 
@@ -90,6 +83,15 @@ export class GameController {
         }
 
     }
+
+    createCharacter = (characterData, characterTeam) => {
+        const character = characterTeam === 'teamHero' ? new Hero(characterData.hitPoints) : new Villain(characterData.hitPoints);
+        character.name = characterData.name;
+        character.strength = characterData.strength;
+        character.weapon = characterData.weapon;
+        character.picture = characterData.picture;
+        return character;
+    };
 }
 
-const timeout = async time => await new Promise(resolve => setTimeout(resolve,  time));
+const timeout = async time => await new Promise(resolve => setTimeout(resolve, time));

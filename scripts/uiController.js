@@ -48,7 +48,9 @@ export class UiController {
         });
 
         this.addCharacterButton.addEventListener('click', async () => {
-            this.readInputs();
+            const newCharacterData = this.readInputs();
+            this.addCharacter(newCharacterData.character);
+            addCharacterToLocalStorage(newCharacterData.team, newCharacterData.character);
             await this.loadCharacterInputs();
             this.fillAllInputs();
         });
@@ -126,26 +128,25 @@ export class UiController {
         const characterHp = this.hpInput.value.trim();
         const characterTeam = this.selectTeamInput.value;
         if (characterName !== '' || characterWeapon !== '' || characterStrength !== '' || characterHp !== '' || characterTeam !== '') {
-            this.addCharacterToTeam(characterName, characterWeapon, characterStrength, characterHp, characterTeam);
-            return;
+            return this.createCharacterAndAddToTeam(characterName, characterWeapon, characterStrength, characterHp, characterTeam);
         }
         console.log('Wrong input value');
     };
 
-    addCharacterToTeam = (characterName, characterWeapon, characterStrength, characterHp, characterTeam) => {
-        const character = characterTeam === 'teamHero' ? new Hero(characterHp) : new Villain(characterHp);
-        character.name = characterName;
-        character.strength = characterStrength;
-        character.weapon = characterWeapon;
-        character.picture = this.personTemporaryData.image;
-        characterTeam === 'teamHero' ? this.gameController.heroTeam.push(character) : this.gameController.villainTeam.push(character);
+    createCharacterAndAddToTeam = (characterName, characterWeapon, characterStrength, characterHp, characterTeam) => {
+        const characterData = {
+            hitPoints: characterHp,
+            name: characterName,
+            strength: characterStrength,
+            weapon: characterWeapon,
+            picture: this.personTemporaryData.image
+        }
 
+        const character = this.gameController.createCharacter(characterData, characterTeam);
+        characterTeam === 'teamHero' ? this.gameController.heroTeam.push(character) : this.gameController.villainTeam.push(character);
         this.characterIds.push(this.personTemporaryData.id);
 
-        this.addCharacter(character);
-
-        addCharacterToLocalStorage(characterTeam, character);
-
+        return { character, team: characterTeam };
     };
 
     removeCharacterFromTeam = (character) => {
@@ -174,7 +175,7 @@ export class UiController {
         const teamWrapperId = characterTeam === 'teamHero' ? '#hero-team' : '#villain-team';
         const teamWrapper = document.querySelector(teamWrapperId);
         const characterWrapper = document.createElement('div');
-console.log(character)
+
         characterWrapper.classList.add('character', 'nes-container');
         characterWrapper.innerHTML = `    
             <h2 class='name' id='char-name'>${character.name}</h2>
