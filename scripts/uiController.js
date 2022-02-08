@@ -1,5 +1,6 @@
 import { getRandomNumberBetween } from './main.js';
 import { Hero, Villain } from './person.js';
+import {addCharacterToLocalStorage} from './gameController.js';
 
 
 export class UiController {
@@ -142,6 +143,9 @@ export class UiController {
         this.characterIds.push(this.personTemporaryData.id);
 
         this.addCharacter(character);
+
+        addCharacterToLocalStorage(characterTeam, character);
+
     };
 
     removeCharacterFromTeam = (character) => {
@@ -193,6 +197,8 @@ console.log(character)
     refreshTeams = (teamHero, teamVillain) => {
         document.querySelector('#hero-team').innerHTML = '';
         document.querySelector('#villain-team').innerHTML = '';
+        console.log(teamHero);
+        console.log(teamVillain);
 
         [...teamHero, ...teamVillain].forEach(character => {
             this.addCharacter(character);

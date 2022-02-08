@@ -11,13 +11,31 @@ function isTeamAlive(team) {
     return teamIsAlive;
 }
 
-function readLocalStorage(teamKey) {
+function setBattleResultToLocalStorage(teamKey) {
     const teamItem= localStorage.getItem(teamKey);
     if(teamItem !== null){
         localStorage.setItem(teamKey, parseInt(teamItem)+1);
     }else {
         localStorage.setItem(teamKey, 1);
     }
+}
+
+export function addCharacterToLocalStorage(characterTeam, character){
+    // let heroCharacters = [];
+    const teamItem = localStorage.getItem(characterTeam);
+    if(teamItem === null) {
+        localStorage.setItem(characterTeam, JSON.stringify([(character)]))
+    } else {
+        const parseItem = JSON.parse(teamItem);
+        console.log(parseItem);
+        parseItem.push(character);
+        localStorage.setItem(characterTeam, JSON.stringify(parseItem))
+    }
+
+
+    // if(characterTeam === 'teamHero') {
+    //     localStorage.setItem(characterTeam, )
+    // }
 }
 
 
@@ -42,7 +60,7 @@ export class GameController {
 
         const teamKey = this.heroTeam.length < 1 ? 'winnerVillain' : 'winnerHero';
 
-        readLocalStorage(teamKey);
+        setBattleResultToLocalStorage(teamKey);
 
         document.querySelector('#villainWins').innerHTML = localStorage.getItem('winnerVillain');
         document.querySelector('#heroWins').innerHTML = localStorage.getItem('winnerHero');
