@@ -5,6 +5,7 @@ export  class Person {
         this.hitPoints = hitPoints;
         this.strength= strength;
         this.htmlWrapper = null;
+        this.maxHitPoints = hitPoints;
 
     }
 

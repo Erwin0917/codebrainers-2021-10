@@ -132,9 +132,8 @@ export class UiController {
     };
 
     addCharacterToTeam = (characterName, characterWeapon, characterStrength, characterHp, characterTeam) => {
-        const character = characterTeam === 'teamHero' ? new Hero() : new Villain();
+        const character = characterTeam === 'teamHero' ? new Hero(characterHp) : new Villain(characterHp);
         character.name = characterName;
-        character.hitPoints = characterHp;
         character.strength = characterStrength;
         character.weapon = characterWeapon;
         character.picture = this.personTemporaryData.image;
@@ -171,7 +170,7 @@ export class UiController {
         const teamWrapperId = characterTeam === 'teamHero' ? '#hero-team' : '#villain-team';
         const teamWrapper = document.querySelector(teamWrapperId);
         const characterWrapper = document.createElement('div');
-
+console.log(character)
         characterWrapper.classList.add('character', 'nes-container');
         characterWrapper.innerHTML = `    
             <h2 class='name' id='char-name'>${character.name}</h2>
@@ -184,7 +183,7 @@ export class UiController {
                 <p>Strength: <span class='nes-text is-success'>${character.strength}</span></p>
                 <p>HitPoints: <span class='nes-text is-error'>${character.hitPoints}</span></p>
             </div>
-            <progress class='nes-progress is-error' value='${character.hitPoints}' max='${character.hitPoints}'></progress>
+            <progress class='nes-progress is-error' value='${character.hitPoints}' max='${character.maxHitPoints}'></progress>
         `;
 
         teamWrapper.appendChild(characterWrapper);
