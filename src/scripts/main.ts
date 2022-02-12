@@ -1,4 +1,4 @@
-import { BattleGame } from './battleGame.js';
+import { BattleGame } from './battleGame';
 
 export function getRandomNumberBetween(min, max) {
     return Math.floor(Math.random() * (max - min * 1) + min);

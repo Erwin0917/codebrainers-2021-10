@@ -1,5 +1,5 @@
-import { Hero, Person, Villain } from './person.js';
-import { getRandomNumberBetween } from './main.js';
+import { Hero, Person, Villain } from './person';
+import { getRandomNumberBetween } from './main';
 
 function isTeamAlive(team) {
     let teamIsAlive = false;

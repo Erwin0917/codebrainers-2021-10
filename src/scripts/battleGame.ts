@@ -1,6 +1,5 @@
-import {GameController, toogleDisableButton} from "./gameController.js";
-import { UiController } from './uiController.js';
-import {Hero, Villain} from './person.js';
+import {GameController, toogleDisableButton} from "./gameController";
+import { UiController } from './uiController';
 
 export class BattleGame {
     constructor() {

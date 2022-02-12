@@ -1,9 +1,29 @@
-import { getRandomNumberBetween } from './main.js';
-import { Hero, Villain } from './person.js';
-import {addCharacterToLocalStorage, removeCharacterToLocalStorage} from "./gameController.js";
+import { getRandomNumberBetween } from './main';
+import { Hero, Villain } from './person';
+import {addCharacterToLocalStorage, removeCharacterToLocalStorage} from "./gameController";
 
 
 export class UiController {
+    uiWrapper;
+    gameController;
+    personTemporaryData = null;
+    characterIds: Array<number> = [];
+
+    nameInput: HTMLInputElement;
+    weaponInput: HTMLInputElement;
+    strengthInput: HTMLInputElement;
+    hpInput: HTMLInputElement;
+    selectTeamInput: HTMLInputElement;
+
+    nameRandomButton;
+    weaponRandomButton;
+    strengthRandomButton;
+    hpRandomButton;
+    randomCharacterButton ;
+    addCharacterButton;
+
+    startBattleButton = document.querySelector('#start-battle');
+
     constructor(uiWrapperHtmlClass, gameController) {
         this.uiWrapper = document.querySelector(uiWrapperHtmlClass);
         this.gameController = gameController;
@@ -64,12 +84,12 @@ export class UiController {
 
     fillHpInput = (newHpValue) => {
         if (typeof newHpValue !== 'number') return;
-        this.hpInput.value = newHpValue;
+        this.hpInput.value = newHpValue.toString();
     };
 
     fillStrengthInput = (newStrengthValue) => {
         if (typeof newStrengthValue !== 'number') return;
-        this.strengthInput.value = newStrengthValue;
+        this.strengthInput.value = newStrengthValue.toString();
     };
 
     fillWeaponInput = (newWeaponInput) => {
@@ -92,7 +112,7 @@ export class UiController {
 
     };
     loadCharacterInputs = async () => {
-        let characterIndex;
+        let characterIndex: number;
         do {
             characterIndex = getRandomNumberBetween(1, 827);
         } while (this.characterIds.includes(characterIndex));
