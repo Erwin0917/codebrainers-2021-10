@@ -1,4 +1,6 @@
 export  class Person {
+    name = '';
+
     constructor(hitPoints = 0, id , strength = 0) {
         if (id === undefined) {
             this.id = `_` + Math.random().toString(36).substr(2, 9);
@@ -6,7 +8,7 @@ export  class Person {
             this.id = id;
         }
 
-        this.name = '';
+
         this.hitPoints = hitPoints;
         this.strength= strength;
         this.htmlWrapper = null;
@@ -31,6 +33,7 @@ export  class Person {
 
     }
 }
+
 
 
 

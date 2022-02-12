@@ -60,9 +60,11 @@ export function removeCharacterToLocalStorage(character) {
 
 
 export class GameController {
+    heroTeam = [];
+    villainTeam = [];
+
     constructor() {
-        this.heroTeam = [];
-        this.villainTeam = [];
+
     }
 
     startBattle = async (refreshCallback) => {
