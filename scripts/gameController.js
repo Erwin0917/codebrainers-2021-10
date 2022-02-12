@@ -20,6 +20,16 @@ function setBattleResultToLocalStorage(teamKey) {
     }
 }
 
+export function toogleDisableButton(button, status) {
+    if (status === "active") {
+        button.removeAttribute("disabled");
+        button.classList.remove("is-disabled");
+    } else {
+        button.setAttribute("disabled", "true");
+        button.classList.add("is-disabled");
+    }
+}
+
 export function addCharacterToLocalStorage(characterTeam, character) {
     const teamItem = localStorage.getItem(characterTeam);
     if (teamItem === null) {
@@ -29,6 +39,23 @@ export function addCharacterToLocalStorage(characterTeam, character) {
         parseItem.push(character);
         localStorage.setItem(characterTeam, JSON.stringify(parseItem));
     }
+}
+
+export function removeCharacterToLocalStorage(character) {
+    const characterTeam = character instanceof Hero ? 'teamHero' : 'teamVillain';
+    const teamItem = localStorage.getItem(characterTeam);
+
+    if (teamItem === null) {
+        return;
+    }
+
+    const parseItem = JSON.parse(teamItem);
+    const filteredParseItem = parseItem.filter((characterFromLocalStorage) =>
+    {
+        return characterFromLocalStorage.id !== character.id;
+    })
+
+    localStorage.setItem(characterTeam, JSON.stringify(filteredParseItem));
 }
 
 
@@ -85,9 +112,10 @@ export class GameController {
     }
 
     createCharacter = (characterData, characterTeam) => {
-        const character = characterTeam === 'teamHero' ? new Hero(characterData.hitPoints) : new Villain(characterData.hitPoints);
+        const character = characterTeam === 'teamHero' ?
+            new Hero(characterData.hitPoints, characterData.strength, characterData.id) :
+            new Villain(characterData.hitPoints,characterData.strength, characterData.id);
         character.name = characterData.name;
-        character.strength = characterData.strength;
         character.weapon = characterData.weapon;
         character.picture = characterData.picture;
         return character;

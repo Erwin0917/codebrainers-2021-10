@@ -1,4 +1,4 @@
-import { GameController } from './gameController.js';
+import {GameController, toogleDisableButton} from "./gameController.js";
 import { UiController } from './uiController.js';
 import {Hero, Villain} from './person.js';
 
@@ -10,19 +10,18 @@ export class BattleGame {
     }
 
     init() {
-        const startBattleButton = document.querySelector('#start-battle');
-        startBattleButton.addEventListener('click', (event) => {
+
+        this.uiController.startBattleButton.addEventListener('click', async (event) => {
             event.preventDefault()
-            this.gameController.startBattle(this.uiController.refreshTeams);
+            await this.gameController.startBattle(this.uiController.refreshTeams);
+            toogleDisableButton(this.uiController.startBattleButton, "nonactive");
         });
-        console.log(this.gameController.heroTeam)
-        console.log(this.gameController.villainTeam)
+        // console.log(this.gameController.heroTeam)
+        // console.log(this.gameController.villainTeam)
         if (this.gameController.heroTeam.length < 1 || this.gameController.villainTeam.length < 1){
-            startBattleButton.setAttribute("disabled", "true")
-            startBattleButton.classList.add("is-disabled")
+            this.uiController.startBattleButton.setAttribute("disabled", "true")
+            this.uiController.startBattleButton.classList.add("is-disabled")
         }
-
-
 
         document.querySelector('#villainWins').innerHTML = localStorage.getItem('winnerVillain');
         document.querySelector('#heroWins').innerHTML = localStorage.getItem('winnerHero');

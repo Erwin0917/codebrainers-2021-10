@@ -1,6 +1,6 @@
 import { getRandomNumberBetween } from './main.js';
 import { Hero, Villain } from './person.js';
-import {addCharacterToLocalStorage} from './gameController.js';
+import {addCharacterToLocalStorage, removeCharacterToLocalStorage} from "./gameController.js";
 
 
 export class UiController {
@@ -22,6 +22,8 @@ export class UiController {
         this.hpRandomButton = this.uiWrapper.querySelector('#random-hitpoints');
         this.randomCharacterButton = this.uiWrapper.querySelector('#random-character');
         this.addCharacterButton = this.uiWrapper.querySelector('#add-character');
+
+        this.startBattleButton = document.querySelector('#start-battle');
 
         this.initAllEventListeners();
     }
@@ -169,12 +171,10 @@ export class UiController {
         const deleteButton = character.htmlWrapper.querySelector('#delete-char');
         const startButton = document.querySelector("#start-battle");
         deleteButton.addEventListener('click', () => {
-            this.removeCharacterFromTeam(character)
-                console.log(startButton);
-                console.log(this.gameController.heroTeam)
-                console.log(this.gameController.villainTeam)
+            this.removeCharacterFromTeam(character);
+            removeCharacterToLocalStorage(character);
             if(this.gameController.heroTeam.length === 0 || this.gameController.villainTeam.length === 0 ){
-                console.log("usuwanie atrybutu")
+
                 startButton.setAttribute("disabled", "true")
                 startButton.classList.add("is-disabled")
             }
@@ -214,8 +214,8 @@ export class UiController {
     refreshTeams = (teamHero, teamVillain) => {
         document.querySelector('#hero-team').innerHTML = '';
         document.querySelector('#villain-team').innerHTML = '';
-        console.log(teamHero);
-        console.log(teamVillain);
+        // console.log(teamHero);
+        // console.log(teamVillain);
 
         [...teamHero, ...teamVillain].forEach(character => {
             this.addCharacter(character);
