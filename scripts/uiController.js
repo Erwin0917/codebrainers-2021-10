@@ -167,7 +167,23 @@ export class UiController {
     addCharacter = (character) => {
         character.htmlWrapper = this.addCharacterToWorld(character);
         const deleteButton = character.htmlWrapper.querySelector('#delete-char');
-        deleteButton.addEventListener('click', () => this.removeCharacterFromTeam(character));
+        const startButton = document.querySelector("#start-battle");
+        deleteButton.addEventListener('click', () => {
+            this.removeCharacterFromTeam(character)
+                console.log(startButton);
+                console.log(this.gameController.heroTeam)
+                console.log(this.gameController.villainTeam)
+            if(this.gameController.heroTeam.length === 0 || this.gameController.villainTeam.length === 0 ){
+                console.log("usuwanie atrybutu")
+                startButton.setAttribute("disabled", "true")
+                startButton.classList.add("is-disabled")
+            }
+        }
+        );
+        if(this.gameController.heroTeam.length > 0 && this.gameController.villainTeam.length > 0){
+            startButton.removeAttribute("disabled")
+            startButton.classList.remove("is-disabled")
+        }
     };
 
     addCharacterToWorld = (character) => {
@@ -204,6 +220,7 @@ export class UiController {
         [...teamHero, ...teamVillain].forEach(character => {
             this.addCharacter(character);
         });
+
     };
 }
 

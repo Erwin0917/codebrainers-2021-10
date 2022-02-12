@@ -11,9 +11,18 @@ export class BattleGame {
 
     init() {
         const startBattleButton = document.querySelector('#start-battle');
-        startBattleButton.addEventListener('click', () => {
+        startBattleButton.addEventListener('click', (event) => {
+            event.preventDefault()
             this.gameController.startBattle(this.uiController.refreshTeams);
         });
+        console.log(this.gameController.heroTeam)
+        console.log(this.gameController.villainTeam)
+        if (this.gameController.heroTeam.length < 1 || this.gameController.villainTeam.length < 1){
+            startBattleButton.setAttribute("disabled", "true")
+            startBattleButton.classList.add("is-disabled")
+        }
+
+
 
         document.querySelector('#villainWins').innerHTML = localStorage.getItem('winnerVillain');
         document.querySelector('#heroWins').innerHTML = localStorage.getItem('winnerHero');
