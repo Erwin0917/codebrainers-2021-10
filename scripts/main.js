@@ -1,5 +1,5 @@
-let columns = 10;
-let rows = 10;
+let rows = 15;
+let columns = 30;
 
 function createArray(columns, rows){
     let squares = new Array(columns)
@@ -11,18 +11,24 @@ function createArray(columns, rows){
     return squares
 }
 
-function createField(){
-    let squares = createArray(columns, rows);
-    for(let i = 0; i < columns; i++)
+let squaresValues = createArray(rows, columns);
+let squares = createArray(rows, columns);
+
+function fillArray(){
+    for(let i = 0; i < rows; i++)
     {
-        for(let j = 0; j < rows; j++)
+        for(let j = 0; j < columns; j++)
         {
-            squares[i][j] = 0;
+            // squaresValues[i][j] = Math.floor(Math.random()*2);
+            squaresValues[i][j] = 0
 
         }
     }
+    console.log(squaresValues)
+}
 
-    console.log(squares)
+function createField(){
+    fillArray();
 
     const squareContainer = document.getElementById("container");
 
@@ -30,16 +36,28 @@ function createField(){
         const row = document.createElement("div");
         row.classList.add("row");
         squareContainer.append(row);
-        for(let i = 0; i < columns; i++){
+
+        for(let j = 0; j < columns; j++){
             const newSquare = document.createElement('div');
             newSquare.classList.add('square');
             row.append(newSquare);
-
+            squares[i][j] = newSquare;
         }
 
     }
 
+    console.log(squares)
 
+    for(let i = 0; i < rows; i++)
+    {
+        for(let j = 0; j < columns; j++)
+        {
+            if(squaresValues[i][j] === 1){
+                squares[i][j].classList.add("blacked");
+            }
+
+        }
+    }
 
 }
 
@@ -47,6 +65,12 @@ createField()
 
 document.querySelectorAll('.square').forEach(item => {
    item.addEventListener("click", ()=>{
-       item.classList.add("blacked");
+       if(item.classList.contains("blacked")){
+           item.classList.remove("blacked");
+       }else
+       {
+           item.classList.add("blacked");
+       }
+
    });
 });
