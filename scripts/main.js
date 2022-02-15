@@ -1,11 +1,11 @@
 let rows = 15;
 let columns = 30;
 
-function createArray(columns, rows){
-    let squares = new Array(columns)
-    for(let i = 0; i < columns; i++)
+function createArray(rows, columns){
+    let squares = new Array(rows)
+    for(let i = 0; i < rows; i++)
     {
-        squares[i] = new Array(rows);
+        squares[i] = new Array(columns);
     }
 
     return squares
@@ -13,18 +13,20 @@ function createArray(columns, rows){
 
 let squaresValues = createArray(rows, columns);
 let squares = createArray(rows, columns);
+let neighbours = createArray(rows, columns);
 
 function fillArray(){
     for(let i = 0; i < rows; i++)
     {
         for(let j = 0; j < columns; j++)
         {
-            // squaresValues[i][j] = Math.floor(Math.random()*2);
-            squaresValues[i][j] = 0
+            squaresValues[i][j] = Math.floor(Math.random()*2);
+            // squaresValues[i][j] = 0
+            neighbours[i][j] = 0
 
         }
     }
-    console.log(squaresValues)
+    // console.log(squaresValues)
 }
 
 function createField(){
@@ -46,7 +48,7 @@ function createField(){
 
     }
 
-    console.log(squares)
+    // console.log(squares)
 
     for(let i = 0; i < rows; i++)
     {
@@ -74,3 +76,42 @@ document.querySelectorAll('.square').forEach(item => {
 
    });
 });
+
+    //if(i === 0 || i === rows || j === 0 || j === columns ){
+    //
+    // }
+console.log(squaresValues)
+function neighboursCount(){
+    for(let i = 1; i < rows-1; i++)
+    {
+
+        for(let j = 1 ; j < columns-1; j++)
+        {
+            let tempNeighborsCount = 0;
+
+            for(let x = -1; x <= 1; x++){
+                for(let y = -1; y <=1; y++){
+
+                    tempNeighborsCount += squaresValues[x+i][y+j];
+                }
+
+            }
+            tempNeighborsCount-=squaresValues[i][j];
+
+
+
+            console.log(tempNeighborsCount);
+            neighbours[i][j] = tempNeighborsCount;
+
+        }
+
+
+    }
+    console.log(neighbours)
+
+}
+neighboursCount()
+
+function startGame(){
+
+}

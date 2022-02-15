@@ -1,6 +1,6 @@
 .controls{
     height: 50px;
-    width: 100%;
+    /*width: 100%;*/
     border: 5px solid black;
 }
 #container{
