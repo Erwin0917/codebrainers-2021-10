@@ -1,8 +1,5 @@
-document.querySelector('.square').addEventListener("click", () => {
-    document.getElementById("2").style.backgroundColor = "black";
-    console.log("aaaaaa");
-})
-
+let columns = 10;
+let rows = 10;
 
 function createArray(columns, rows){
     let squares = new Array(columns)
@@ -14,12 +11,8 @@ function createArray(columns, rows){
     return squares
 }
 
-
-
-
-
 function createField(){
-    let squares = createArray(10, 10);
+    let squares = createArray(columns, rows);
     for(let i = 0; i < columns; i++)
     {
         for(let j = 0; j < rows; j++)
@@ -32,19 +25,28 @@ function createField(){
     console.log(squares)
 
     const squareContainer = document.getElementById("container");
-    const newSquare = document.createElement('div');
-    newSquare.classList.add('square');
 
-    squareContainer.append(newSquare);
+    for(let i = 0; i < rows; i++){
+        const row = document.createElement("div");
+        row.classList.add("row");
+        squareContainer.append(row);
+        for(let i = 0; i < columns; i++){
+            const newSquare = document.createElement('div');
+            newSquare.classList.add('square');
+            row.append(newSquare);
+
+        }
+
+    }
+
+
+
 }
 
-// for(let i = 0; i<25; i++)
-// {
-//     for (let j = 0;j<20;j++)
-//     {
-//         createField();
-//     }
-//
-// }
-
 createField()
+
+document.querySelectorAll('.square').forEach(item => {
+   item.addEventListener("click", ()=>{
+       item.classList.add("blacked");
+   });
+});
