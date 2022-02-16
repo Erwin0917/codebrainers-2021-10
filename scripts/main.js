@@ -1,5 +1,7 @@
-let rows = 15+2;
-let columns = 30+2;
+let rows = parseInt(document.getElementById("rows").value) + 2;
+let columns = parseInt(document.getElementById("columns").value) + 2;
+
+console.log(rows)
 
 function createArray(rows, columns){
     let array = new Array(rows)
@@ -33,14 +35,14 @@ function fillArray(){
     {
         for(let j = 0; j < columns; j++)
         {
-            squaresValues[i][j] = Math.floor(Math.random()*2);
-            // squaresValues[i][j] = 1;
+            // squaresValues[i][j] = Math.floor(Math.random()*2);
+            squaresValues[i][j] = 0;
 
 
         }
     }
 
-    for(let i = 0; i< columns;i++)
+    for(let i = 0; i < columns;i++)
     {
         squaresValues[0][i] = 0;
         squaresValues[rows-1][i] = 0;
@@ -79,9 +81,9 @@ function createField(){
 
     // console.log(squares)
 
-    for(let i = 0; i < rows; i++)
+    for(let i = 1; i < rows-1; i++)
     {
-        for(let j = 0; j < columns; j++)
+        for(let j = 1; j < columns-1; j++)
         {
             if(squaresValues[i][j] === 1){
                 squares[i][j].classList.add("blacked");
@@ -97,19 +99,6 @@ function createField(){
 }
 
 createField()
-
-document.querySelectorAll('.square').forEach(item => {
-   item.addEventListener("click", ()=>{
-       if(item.classList.contains("blacked")){
-           item.classList.remove("blacked");
-       }else
-       {
-           item.classList.add("blacked");
-       }
-
-   });
-});
-
     //if(i === 0 || i === rows || j === 0 || j === columns ){
     //
     // }
@@ -142,7 +131,7 @@ function neighboursCount(){
     }
 
 }
-neighboursCount()
+
 console.log(squaresValues);
 const newSquaresValues = squaresValues.map(function(arr) {
     return arr.slice();
@@ -152,8 +141,15 @@ function changeStateOfCell(){
     for(let i = 1; i < rows-1; i++){
 
         for(let j = 1; j < columns-1; j++){
-            if(neighbours[i][j] < 2){
-                squaresValues[i][j] = 0;
+            if(squaresValues[i][j] === 1 && (neighbours[i][j] < 2 || neighbours[i][j] > 3)){
+                newSquaresValues[i][j] = 0;
+
+            }else if(squaresValues[i][j] ===1 && (neighbours[i][j] = 2 || neighbours[i][j] === 3)){
+                newSquaresValues[i][j] = 1;
+
+            }else if(squaresValues[i][j] === 0 && neighbours[i][j] === 3){
+                newSquaresValues[i][j] = 1;
+
             }
 
         }
@@ -166,21 +162,62 @@ function changeStateOfCell(){
 console.log(newSquaresValues);
 
 function startGame(){
+    console.log("gamestart")
+    neighboursCount()
     changeStateOfCell()
-        for(let i = 0; i < rows; i++)
+        for(let i = 1; i < rows-1; i++)
         {
-            for(let j = 0; j < columns; j++)
+            for(let j = 1; j < columns-1; j++)
             {
-                if(squaresValues[i][j] === 1)
+                if(newSquaresValues[i][j] === 0 && squares[i][j].classList.contains("blacked"))
                 {
                     squares[i][j].classList.remove("blacked");
+                    // console.log(squares[i][j].classList);
+                }else if(newSquaresValues[i][j] === 1 && !squares[i][j].classList.contains("blacked")){
+                    squares[i][j].classList.add("blacked");
                 }
 
             }
         }
+
+    squaresValues = newSquaresValues.map(function(arr) {
+        return arr.slice();
+    });
+
+
+}
+let interval = -1;
+let button = document.getElementById("start");
+button.addEventListener('click', () => {
+    if(interval === -1){
+        interval = setInterval(startGame, 300);
+        button.textContent = "STOP"
+    }
+    else{
+        clearInterval(interval);
+        interval=-1;
+        button.textContent = "START"
+    }
+});
+
+for(let i = 1; i < rows-1; i++)
+{
+    for(let j = 1; j < columns-1; j++)
+    {
+        squares[i][j].addEventListener("click", () => {
+            if (squares[i][j].classList.contains("blacked")) {
+                squares[i][j].classList.remove("blacked");
+                squaresValues[i][j] = 0
+
+            } else {
+                squares[i][j].classList.add("blacked");
+                squaresValues[i][j] = 1
+            }
+
+        });
+
+    }
 }
 
-document.querySelector('.start').addEventListener('click', () => {
-    startGame();
-    console.log("start");
-});
+
+
