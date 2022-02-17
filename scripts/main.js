@@ -1,7 +1,13 @@
 let rows = parseInt(document.getElementById("rows").value) + 2;
 let columns = parseInt(document.getElementById("columns").value) + 2;
 
-console.log(rows)
+const rowsChange = document.getElementById("rows")
+rowsChange.addEventListener("change", (event) => {
+    rows = parseInt(rowsChange.value)+2;
+    console.log(rows)
+});
+
+
 
 function createArray(rows, columns){
     let array = new Array(rows)
@@ -26,9 +32,6 @@ let squaresValues = createLargerArray(rows, columns);
 let squares = createArray(rows, columns);
 let neighbours = createArray(rows, columns);
 
-// console.log(squaresValues)
-// console.log(neighbours)
-
 function fillArray(){
 
     for(let i = 0; i < rows; i++)
@@ -37,7 +40,6 @@ function fillArray(){
         {
             // squaresValues[i][j] = Math.floor(Math.random()*2);
             squaresValues[i][j] = 0;
-
 
         }
     }
@@ -54,11 +56,8 @@ function fillArray(){
         squaresValues[i][0] = 0;
         squaresValues[i][columns-1] = 0;
     }
-    // console.log(squaresValues)
-}
 
-// columns-=2;
-// rows-=2;
+}
 
 function createField(){
     fillArray();
@@ -99,11 +98,9 @@ function createField(){
 }
 
 createField()
-    //if(i === 0 || i === rows || j === 0 || j === columns ){
-    //
-    // }
-// console.log(squaresValues)
+
 function neighboursCount(){
+
     for(let i = 1; i < rows-1; i++)
     {
 
