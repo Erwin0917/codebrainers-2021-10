@@ -190,10 +190,8 @@ function startGame(){
     console.log("start")
     neighboursCount()
     changeStateOfCell()
-        for(let i = 1; i < rows-1; i++)
-        {
-            for(let j = 1; j < columns-1; j++)
-            {
+        for(let i = 1; i < rows-1; i++) {
+            for(let j = 1; j < columns-1; j++) {
                 if(newSquaresValues[i][j] === 0 && squares[i][j].classList.contains("blacked"))
                 {
                     squares[i][j].classList.remove("blacked");
