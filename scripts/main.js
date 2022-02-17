@@ -9,12 +9,12 @@ let newSquaresValues
 const rowsChange = document.getElementById("rows")
 rowsChange.addEventListener("change", () => {
     rows = parseInt(rowsChange.value)+2;
-    prepareGame()
+    prepareGame(0);
 });
 const columnsChange = document.getElementById("columns")
 columnsChange.addEventListener("change", () => {
     columns = parseInt(columnsChange.value)+2;
-    prepareGame()
+    prepareGame(0);
 });
 const fpsChange = document.getElementById("fps")
 fpsChange.addEventListener("change", () => {
@@ -22,15 +22,18 @@ fpsChange.addEventListener("change", () => {
     clearInterval(interval);
     interval=-1;
     run(fpsInput)
+});
 
+document.getElementById("random").addEventListener('click', () => {
+    prepareGame(1);
 
 });
 
-function prepareGame(){
+function prepareGame(fillState){
     squaresValues = createLargerArray(rows, columns);
     squares = createArray(rows, columns);
     neighbours = createArray(rows, columns);
-    createField();
+    createField(fillState);
 
 }
 prepareGame();
@@ -55,15 +58,18 @@ function createLargerArray(rows, columns){
     return array
 }
 
-function fillArray(){
+function fillArray(fillState){
 
     for(let i = 0; i < rows; i++)
     {
         for(let j = 0; j < columns; j++)
         {
-            // squaresValues[i][j] = Math.floor(Math.random()*2);
-            squaresValues[i][j] = 0;
-
+            if(fillState === 1) {
+                squaresValues[i][j] = Math.floor(Math.random()*2);
+            }else
+            {
+                squaresValues[i][j] = 0;
+            }
         }
     }
 
@@ -82,8 +88,8 @@ function fillArray(){
 
 }
 
-function createField(){
-    fillArray();
+function createField(fillState){
+    fillArray(fillState);
 
     const squareContainer = document.getElementById("container");
     if(squareContainer.hasChildNodes()) {
