@@ -1,13 +1,39 @@
 let rows = parseInt(document.getElementById("rows").value) + 2;
 let columns = parseInt(document.getElementById("columns").value) + 2;
+let fpsInput = parseInt(document.getElementById("fps").value);
+let squaresValues;
+let squares;
+let neighbours;
+let newSquaresValues
 
 const rowsChange = document.getElementById("rows")
-rowsChange.addEventListener("change", (event) => {
+rowsChange.addEventListener("change", () => {
     rows = parseInt(rowsChange.value)+2;
-    console.log(rows)
+    prepareGame()
+});
+const columnsChange = document.getElementById("columns")
+columnsChange.addEventListener("change", () => {
+    columns = parseInt(columnsChange.value)+2;
+    prepareGame()
+});
+const fpsChange = document.getElementById("fps")
+fpsChange.addEventListener("change", () => {
+    fpsInput = parseInt(fpsChange.value);
+    clearInterval(interval);
+    interval=-1;
+    run(fpsInput)
+
+
 });
 
+function prepareGame(){
+    squaresValues = createLargerArray(rows, columns);
+    squares = createArray(rows, columns);
+    neighbours = createArray(rows, columns);
+    createField();
 
+}
+prepareGame();
 
 function createArray(rows, columns){
     let array = new Array(rows)
@@ -18,6 +44,7 @@ function createArray(rows, columns){
 
     return array
 }
+
 function createLargerArray(rows, columns){
     let array = new Array(rows)
     for(let i = 0; i < rows; i++)
@@ -27,10 +54,6 @@ function createLargerArray(rows, columns){
 
     return array
 }
-
-let squaresValues = createLargerArray(rows, columns);
-let squares = createArray(rows, columns);
-let neighbours = createArray(rows, columns);
 
 function fillArray(){
 
@@ -63,22 +86,25 @@ function createField(){
     fillArray();
 
     const squareContainer = document.getElementById("container");
+    if(squareContainer.hasChildNodes()) {
+        squareContainer.innerHTML = "";
+    }
 
     for(let i = 1; i < rows-1; i++){
         const row = document.createElement("div");
         row.classList.add("row");
         squareContainer.append(row);
 
-        for(let j = 1; j < columns-1; j++){
+        for(let j = 1; j < columns - 1; j++){
             const newSquare = document.createElement('div');
             newSquare.classList.add('square');
             row.append(newSquare);
             squares[i][j] = newSquare;
+
         }
 
     }
 
-    // console.log(squares)
 
     for(let i = 1; i < rows-1; i++)
     {
@@ -87,52 +113,51 @@ function createField(){
             if(squaresValues[i][j] === 1){
                 squares[i][j].classList.add("blacked");
             }
-            // if(squaresValues[i][j] === 0){
-            //     squares[i][j].classList.add("blacked");
-            // }
-
 
         }
     }
 
-}
+    for(let i = 1; i < rows-1; i++)
+    {
+        for(let j = 1; j < columns-1; j++)
+        {
+            squares[i][j].addEventListener("click", () => {
+                if (squares[i][j].classList.contains("blacked")) {
+                    squares[i][j].classList.remove("blacked");
+                    squaresValues[i][j] = 0
 
-createField()
+                } else {
+                    squares[i][j].classList.add("blacked");
+                    squaresValues[i][j] = 1
+                }
+            });
+        }
+    }
+
+}
 
 function neighboursCount(){
 
     for(let i = 1; i < rows-1; i++)
     {
-
         for(let j = 1 ; j < columns-1; j++)
         {
             let tempNeighborsCount = 0;
-
             for(let x = -1; x <= 1; x++){
                 for(let y = -1; y <=1; y++){
-
                     tempNeighborsCount += squaresValues[x+i][y+j];
                 }
-
             }
             tempNeighborsCount-=squaresValues[i][j];
 
-
-
-            // console.log(tempNeighborsCount);
             neighbours[i][j] = tempNeighborsCount;
 
         }
-
-
     }
-
+    newSquaresValues = squaresValues.map(function(arr) {
+        return arr.slice();
+    });
 }
-
-console.log(squaresValues);
-const newSquaresValues = squaresValues.map(function(arr) {
-    return arr.slice();
-});
 
 function changeStateOfCell(){
     for(let i = 1; i < rows-1; i++){
@@ -141,7 +166,7 @@ function changeStateOfCell(){
             if(squaresValues[i][j] === 1 && (neighbours[i][j] < 2 || neighbours[i][j] > 3)){
                 newSquaresValues[i][j] = 0;
 
-            }else if(squaresValues[i][j] ===1 && (neighbours[i][j] = 2 || neighbours[i][j] === 3)){
+            }else if(squaresValues[i][j] === 1 && (neighbours[i][j] = 2 || neighbours[i][j] === 3)){
                 newSquaresValues[i][j] = 1;
 
             }else if(squaresValues[i][j] === 0 && neighbours[i][j] === 3){
@@ -153,13 +178,10 @@ function changeStateOfCell(){
 
     }
 
-
 }
 
-console.log(newSquaresValues);
-
 function startGame(){
-    console.log("gamestart")
+    console.log("start")
     neighboursCount()
     changeStateOfCell()
         for(let i = 1; i < rows-1; i++)
@@ -169,7 +191,7 @@ function startGame(){
                 if(newSquaresValues[i][j] === 0 && squares[i][j].classList.contains("blacked"))
                 {
                     squares[i][j].classList.remove("blacked");
-                    // console.log(squares[i][j].classList);
+
                 }else if(newSquaresValues[i][j] === 1 && !squares[i][j].classList.contains("blacked")){
                     squares[i][j].classList.add("blacked");
                 }
@@ -186,33 +208,19 @@ function startGame(){
 let interval = -1;
 let button = document.getElementById("start");
 button.addEventListener('click', () => {
+    run(fpsInput);
+
+});
+
+function run(fpsInput){
     if(interval === -1){
-        interval = setInterval(startGame, 300);
+        interval = setInterval(startGame, 1000/fpsInput);
         button.textContent = "STOP"
     }
     else{
         clearInterval(interval);
         interval=-1;
         button.textContent = "START"
-    }
-});
-
-for(let i = 1; i < rows-1; i++)
-{
-    for(let j = 1; j < columns-1; j++)
-    {
-        squares[i][j].addEventListener("click", () => {
-            if (squares[i][j].classList.contains("blacked")) {
-                squares[i][j].classList.remove("blacked");
-                squaresValues[i][j] = 0
-
-            } else {
-                squares[i][j].classList.add("blacked");
-                squaresValues[i][j] = 1
-            }
-
-        });
-
     }
 }
 

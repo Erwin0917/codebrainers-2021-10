@@ -1,23 +1,82 @@
+body{
+    background-color: #1a1a1d;
+    /*overflow: hidden;*/
+}
 .controls{
     height: 50px;
     /*width: 100%;*/
-    border: 5px solid black;
+    border: 5px solid #6f2232;
+    border-bottom: 0;
+    display: flex;
+
+
 }
+
+.controlsElem{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+label {
+    display: block;
+    font-weight: 700;
+    font-size: 18px;
+    color: #797979;
+
+}
+
+input[type="number"]{
+    width: 50px;
+    border: 3px solid #950740;
+    border-radius: 10px;
+    padding: 0 10px 0 10px;
+    outline: none;
+    height: 30px;
+    margin: 10px;
+    font-weight: 700;
+    color: white;
+    background-color: #1a1a1d;
+}
+
+#start{
+    width: 70px;
+    border: 3px solid #950740;
+    border-radius: 10px;
+    padding: 0;
+    outline: none;
+    height: 30px;
+    margin: 10px;
+    color: white;
+    background-color: #1a1a1d;
+    font-weight: 700;
+}
+
 #container{
-    border: 5px solid black;
+    border: 5px solid #6f2232;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+
+    /*max-height: calc(100vh - 105px);*/
+    padding: 10px;
+    /*height: calc(100vh - 105px);;*/
 }
 .row{
     display: flex;
     width: 100%;
+    justify-content: center;
+
+    max-height: calc(100vh - 105px);
 }
 .square{
-    border: 2px solid gray;
-    height: 40px;
-    width: 40px;
+    border: 2px solid #0b0c10;
+    width: 50px;
+    aspect-ratio: 1;
+
 
 }
 .blacked{
-    background-color: black;
+    background-color: #c3073f;
 }
+/*#c3073f*/
